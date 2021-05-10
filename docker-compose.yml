@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  mee7:
+    container_name: mee7
+    restart: always
+    build: .
+    env_file: .env
