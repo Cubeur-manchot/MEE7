@@ -1,0 +1,14 @@
+{
+  "name": "Mee7",
+  "author": "Cubeur-manchot",
+  "description": "Discord bot for design commands.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "googleapis": "^72.0.0"
+  },
+  "license": "ISC"
+}
