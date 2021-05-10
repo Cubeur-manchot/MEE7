@@ -35,4 +35,3 @@ const onMessage = async message => {
 };
 
 module.exports = {onReady, onMessage};
-trucmuch
