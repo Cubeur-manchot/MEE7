@@ -3,5 +3,5 @@ services:
   mee7:
     container_name: mee7
     restart: always
-    build: .
+    image: docker.pkg.github.com/cubeur-manchot/mee7/mee7:latest
     env_file: .env
