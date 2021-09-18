@@ -14,7 +14,7 @@ const getPbList = async () => {
 	})).data.values;
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		if (data[lineIndex][0] !== "" && data[lineIndex][1] !== "") {
+		if (data[lineIndex][0] && data[lineIndex][1]) { // check if both name and time exist and are non-empty
 			PBList.push({
 				member: data[lineIndex][0].replace(/'/g, "’"),
 				time: data[lineIndex][1]
