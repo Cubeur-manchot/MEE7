@@ -1,6 +1,6 @@
 "use strict";
 
-const {sendMessageToChannel} = require("./messages.js");
+const {sendEmbedToChannel} = require("./messages.js");
 const {getPbList} = require("./pbList.js");
 const fs = require('fs');
 
@@ -30,7 +30,7 @@ const setupGoogleSheetsAPICredentials = () => {
 
 const onMessage = async message => {
 	if (message.content === "!pblist") {
-		sendMessageToChannel(message.channel, await getPbList());
+		sendEmbedToChannel(message.channel, await getPbList());
 	}
 };
 
