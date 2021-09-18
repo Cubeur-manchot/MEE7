@@ -14,15 +14,15 @@ const getPbList = async () => {
 	})).data.values;
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		if (data[lineIndex][0] && data[lineIndex][1]) { // check if both name and time exist and are non-empty
+		if (data[lineIndex][0] && parseFloat(data[lineIndex][1])) { // check if both name and time exist and are non-empty
 			PBList.push({
 				member: data[lineIndex][0].replace(/'/g, "’"),
-				time: data[lineIndex][1]
+				time: parseFloat(data[lineIndex][1])
 			});
 		}
 	}
 	PBList.sort((firstElement, secondElement) => {
-		return parseFloat(secondElement.time) - parseFloat(firstElement.time);
+		return secondElement.time - firstElement.time;
 	});
 	let maximumDigitCount = PBList.length < 10 ? 1 : PBList.length < 100 ? 2 : 3;
 	let result = "__**Vos <:PB:369399684156096512> <:Single:369420530098372608> <:3x3solved:693841238461382739> :**__\n\n```js";
