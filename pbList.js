@@ -1,17 +1,9 @@
 "use strict";
 
-const {google} = require("googleapis");
+const {loadData} = require("./data.js");
 
 const getPbList = async () => {
-	let auth = new google.auth.GoogleAuth({
-		keyFile: "credentials.json",
-		scopes: "https://www.googleapis.com/auth/spreadsheets"
-	});
-	let data = (await google.sheets({version: "v4", auth: await auth.getClient()}).spreadsheets.values.get({
-		auth: auth,
-		spreadsheetId: "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0",
-		range: "Liste des PB"
-	})).data.values;
+	let data = loadData("Liste des PB");
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (data[lineIndex][0] && parseFloat(data[lineIndex][1])) { // check if both name and time exist and are non-empty
