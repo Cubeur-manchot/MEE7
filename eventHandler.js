@@ -38,7 +38,7 @@ const onMessage = async message => {
 		let command = message.content.substring(1).toLowerCase();
 		if (command === "pblist") {
 			sendEmbedToChannel(message.channel, await getPbList());
-		} else if (command === "bestcubes2") {
+		} else if (command === "bestcubes") {
 			sendEmbedToChannel(message.channel, await getBestCubes());
 		}
 	}
