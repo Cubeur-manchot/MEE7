@@ -19,19 +19,19 @@ const bestCubeEmoji = {
 const getBestCubes = async () => {
 	let data = loadData("Meilleurs cubes");
 	let bestCubes = {wca: [], nonWca: []};
-	for (let line of data) {
-		console.log(line);
-		if (!line[0].startsWith("Event")) { // ignore header lines
-			let emoji = bestCubeEmoji[line[0]];
+	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
+		console.log(data[lineIndex]);
+		if (!data[lineIndex][0].startsWith("Event")) { // ignore header lines
+			let emoji = bestCubeEmoji[data[lineIndex][0]];
 			if (emoji) {
 				bestCubes.wca.push({
 					emoji: emoji,
-					flagships: line[1]
+					flagships: data[lineIndex][1]
 				});
 			} else {
 				bestCubes.nonWca.push({
-					eventName: line[0],
-					flagships: line[1]
+					eventName: data[lineIndex][0],
+					flagships: data[lineIndex][1]
 				});
 			}
 		}
