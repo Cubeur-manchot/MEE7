@@ -3,7 +3,7 @@
 const {loadData} = require("./data.js");
 
 const getPbList = async () => {
-	let data = loadData("Liste des PB");
+	let data = await loadData("Liste des PB");
 	console.log("data :");
 	console.log(data);
 	let PBList = [];
