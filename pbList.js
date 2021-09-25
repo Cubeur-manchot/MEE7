@@ -4,6 +4,8 @@ const {loadData} = require("./data.js");
 
 const getPbList = async () => {
 	let data = loadData("Liste des PB");
+	console.log("data :");
+	console.log(data);
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (data[lineIndex][0] && parseFloat(data[lineIndex][1])) { // check if both name and time exist and are non-empty
