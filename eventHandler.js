@@ -2,6 +2,7 @@
 
 const {sendEmbedToChannel} = require("./messages.js");
 const {getPbList} = require("./pbList.js");
+const {getBestCubes} = require("./bestCubes.js");
 const fs = require('fs');
 
 const onReady = Mee7 => {
@@ -28,9 +29,18 @@ const setupGoogleSheetsAPICredentials = () => {
 	});
 };
 
+const isMee7CommandMessage = message => {
+	return message.content.match(/^![A-Za-z]/);
+};
+
 const onMessage = async message => {
-	if (message.content === "!pblist") {
-		sendEmbedToChannel(message.channel, await getPbList());
+	if (isMee7CommandMessage(message)) {
+		let command = message.content.substring(1).toLowerCase();
+		if (command === "pblist") {
+			sendEmbedToChannel(message.channel, await getPbList());
+		} else if (command === "bestcubes2") {
+			sendEmbedToChannel(message.channel, await getBestCubes());
+		}
 	}
 };
 

@@ -46,8 +46,8 @@ const getPbList = async () => {
 	}
 	return {
 		color: "#ffbf00",
-		title: `<:PB:369399684156096512> <:Single:369420530098372608> <:3x3solved:693841238461382739>`,
-		description: "Liste en ligne : <https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing>",
+		title: "PB single des membres du serveur",
+		url: "https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing",
 		fields: embedFields,
 		timestamp: new Date()
 	};
