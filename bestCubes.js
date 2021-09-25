@@ -45,7 +45,7 @@ const getBestCubes = async () => {
 	wcaFormattedList = wcaFormattedList.substring(1); // remove first line return
 	let nonWcaFormattedList = "";
 	for (let bestCube of bestCubes.nonWca) {
-		nonWcaFormattedList += `\n${bestCube.eventName} : ${bestCube.flagships}`;
+		nonWcaFormattedList += `\n**${bestCube.eventName}** : ${bestCube.flagships}`;
 	}
 	nonWcaFormattedList = nonWcaFormattedList.substring(1); // remove first line return
 	return {
