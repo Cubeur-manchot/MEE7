@@ -13,6 +13,7 @@ const getPbList = async () => {
 			});
 		}
 	}
+	console.log("PB list : " + PBList.length);
 	PBList.sort((firstElement, secondElement) => {
 		return parseFloat(firstElement.time) - parseFloat(secondElement.time);
 	});
@@ -44,10 +45,12 @@ const getPbList = async () => {
 			}
 		}
 	}
+	console.log("embed fields : " + embedFields.length);
 	return {
 		color: "#ffbf00",
 		title: "PB single des membres du serveur",
 		url: "https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing",
+		description: "",
 		fields: embedFields,
 		timestamp: new Date()
 	};
