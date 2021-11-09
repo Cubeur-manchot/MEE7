@@ -17,7 +17,7 @@ const getPbList = async () => {
 		return parseFloat(firstElement.time) - parseFloat(secondElement.time);
 	});
 	let embedFields = [];
-	for (let groupsOfTen = 0; groupsOfTen >= 0; groupsOfTen += 10) {
+	for (let groupsOfTen = 0; groupsOfTen < 100 && groupsOfTen >= 0; groupsOfTen += 10) {
 		let currentField = {
 			name: `${groupsOfTen + 1}-${groupsOfTen + 10}`,
 			value: "",
