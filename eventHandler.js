@@ -9,7 +9,7 @@ const onReady = Mee7 => {
 	Mee7.user.setActivity("filer un coup de main à MEE6")
 		.then(() => console.log("MEE7 is ready !"))
 		.catch(console.error);
-	setupGoogleSheetsAPICredentials(Mee7);
+	setupGoogleSheetsAPICredentials();
 };
 
 const setupGoogleSheetsAPICredentials = () => {
