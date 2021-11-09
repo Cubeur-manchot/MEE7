@@ -4,8 +4,6 @@ const {loadData} = require("./data.js");
 
 const getPbList = async () => {
 	let data = await loadData("Liste des PB");
-	console.log("data :");
-	console.log(data);
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (data[lineIndex][0] && parseFloat(data[lineIndex][1])) { // check if both name and time exist and are non-empty
@@ -15,7 +13,6 @@ const getPbList = async () => {
 			});
 		}
 	}
-	console.log("PB list : " + PBList.length);
 	PBList.sort((firstElement, secondElement) => {
 		return parseFloat(firstElement.time) - parseFloat(secondElement.time);
 	});
@@ -47,7 +44,6 @@ const getPbList = async () => {
 			}
 		}
 	}
-	console.log("embed fields : " + embedFields.length);
 	return {
 		color: "#ffbf00",
 		title: "PB single des membres du serveur",

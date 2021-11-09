@@ -18,11 +18,8 @@ const bestCubeEmoji = {
 
 const getBestCubes = async () => {
 	let data = await loadData("Meilleurs cubes");
-	console.log("data :");
-	console.log(data);
 	let bestCubes = {wca: [], nonWca: []};
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		console.log(data[lineIndex]);
 		if (!data[lineIndex][0].startsWith("Event")) { // ignore header lines
 			let emoji = bestCubeEmoji[data[lineIndex][0]];
 			if (emoji) {
