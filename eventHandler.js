@@ -47,6 +47,13 @@ const onMessage = async message => {
 			}
 		} else if (command === "bestcubes") {
 			sendEmbedToChannel(message.channel, await getBestCubes());
+		} else if (command === "restart") {
+			if (message.author.id === "217709941081767937") { // message sent by Cubeur-manchot
+				sendMessageToChannel(message.channel, ":arrows_counterclockwise: Redémarrage...");
+				throw "Restarting according to Cubeur-manchot's command...";
+			} else {
+				sendMessageToChannel(message.channel, ":x: Seul <@217709941081767937> est autoriser à me redémarrer.");
+			}
 		} else if (command === "help") {
 			sendMessageToChannel(message.channel, helpMessage);
 		}
