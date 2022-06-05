@@ -2,7 +2,7 @@
 
 const {loadData} = require("./data.js");
 
-const events = process.env.EVENTS;
+const events = process.env.EVENTS.split(",");
 
 const getPbList = async event => {
 	let data = await loadData(`Liste des PB ${event}`);

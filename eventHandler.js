@@ -1,8 +1,9 @@
 "use strict";
 
-const {sendEmbedToChannel} = require("./messages.js");
+const {sendEmbedToChannel, sendMessageToChannel} = require("./messages.js");
 const {getPbList, events} = require("./pbList.js");
 const {getBestCubes} = require("./bestCubes.js");
+const {helpMessage} = require("./help.js");
 const fs = require('fs');
 
 const onReady = Mee7 => {
@@ -42,10 +43,12 @@ const onMessage = async message => {
 				sendEmbedToChannel(message.channel, await getPbList(event));
 			} else {
 				sendMessageToChannel(message.channel,
-					`:x: Erreur : event ${event} non reconnu/supporté. Choix possibles : "${events.join('", "')}".`);
+					`:x: Erreur : event ${event} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
 		} else if (command === "bestcubes") {
 			sendEmbedToChannel(message.channel, await getBestCubes());
+		} else if (command === "help") {
+			sendMessageToChannel(message.channel, helpMessage);
 		}
 	}
 };
