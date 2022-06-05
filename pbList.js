@@ -2,19 +2,23 @@
 
 const {loadData} = require("./data.js");
 
-const getPbList = async () => {
-	let data = await loadData("Liste des PB");
+const events = process.env.EVENTS;
+
+const getPbList = async event => {
+	let data = await loadData(`Liste des PB ${event}`);
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		if (data[lineIndex][0] && parseFloat(data[lineIndex][1])) { // check if both name and time exist and are non-empty
+		if (data[lineIndex][0] && parseDurationSeconds(data[lineIndex][1])) { // check if both name and time exist and are non-empty
 			PBList.push({
 				member: data[lineIndex][0].replace(/'/g, "’"),
 				time: data[lineIndex][1]
 			});
+		} else {
+			throw `Error : Invalid format (sheet = Liste des PB ${event}, lineIndex = ${lineIndex}).`;
 		}
 	}
 	PBList.sort((firstElement, secondElement) => {
-		return parseFloat(firstElement.time) - parseFloat(secondElement.time);
+		return parseDurationSeconds(firstElement.time) - parseDurationSeconds(secondElement.time);
 	});
 	let embedFields = [];
 	for (let groupsOfTen = 0; groupsOfTen < 100 && groupsOfTen >= 0; groupsOfTen += 10) {
@@ -54,4 +58,13 @@ const getPbList = async () => {
 	};
 };
 
-module.exports = {getPbList};
+const parseDurationSeconds = durationString => {
+	if (durationString.includes(":")) {
+		let [minutes, seconds] = durationString.split(":");
+		return parseFloat(minutes) * 60 + parseFloat(seconds);
+	} else {
+		return parseFloat(durationString);
+	}
+};
+
+module.exports = {getPbList, events};
