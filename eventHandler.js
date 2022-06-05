@@ -54,6 +54,8 @@ const onMessage = async message => {
 			} else {
 				sendMessageToChannel(message.channel, ":x: Seul <@217709941081767937> est autoriser à me redémarrer.");
 			}
+		} else if (command === "ping") {
+			sendMessageToChannel(message.channel, ":ping_pong: Pong ! :ping_pong:");
 		} else if (command === "help") {
 			sendMessageToChannel(message.channel, helpMessage);
 		}
