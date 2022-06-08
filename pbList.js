@@ -50,7 +50,7 @@ const getPbList = async event => {
 	}
 	return {
 		color: "#ffbf00",
-		title: "PB single des membres du serveur",
+		title: `PB single des membres du serveur (${event})`,
 		url: "https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing",
 		description: "",
 		fields: embedFields,
