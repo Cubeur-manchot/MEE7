@@ -1,10 +1,10 @@
 "use strict";
 
-const {sendEmbedToChannel, sendMessageToChannel} = require("./messages.js");
-const {getPbList, events} = require("./pbList.js");
-const {getBestCubes} = require("./bestCubes.js");
-const {helpMessage} = require("./help.js");
-const fs = require('fs');
+import {sendEmbedToChannel, sendMessageToChannel} from "./messages.js";
+import {getPbList, events} from "./pbList.js";
+import {getBestCubes} from "./bestCubes.js";
+import {helpMessage} from "./help.js";
+import fs from 'fs';
 
 const onReady = Mee7 => {
 	Mee7.user.setActivity("filer un coup de main à MEE6")
@@ -62,4 +62,4 @@ const onMessage = async message => {
 	}
 };
 
-module.exports = {onReady, onMessage};
+export {onReady, onMessage};

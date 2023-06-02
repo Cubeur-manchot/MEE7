@@ -1,6 +1,6 @@
 "use strict";
 
-const {loadData} = require("./data.js");
+import {loadData} from "./data.js";
 
 const bestCubeEmoji = {
 	"2x2": "<:2x2x2:889220192842969148>",
@@ -62,4 +62,4 @@ const getBestCubes = async () => {
 	};
 };
 
-module.exports = {getBestCubes};
+export {getBestCubes};

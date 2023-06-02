@@ -1,6 +1,6 @@
 "use strict";
 
-const {loadData} = require("./data.js");
+import {loadData} from "./data.js";
 
 const events = process.env.EVENTS.split(",");
 
@@ -67,4 +67,4 @@ const parseDurationSeconds = durationString => {
 	}
 };
 
-module.exports = {getPbList, events};
+export {getPbList, events};

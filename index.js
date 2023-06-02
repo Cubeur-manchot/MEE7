@@ -1,8 +1,8 @@
 "use strict";
 
-const Discord = require("discord.js");
+import Discord from "discord.js";
 
-const {onReady, onMessage} = require("./eventHandler.js");
+import {onReady, onMessage} from "./eventHandler.js";
 
 const Mee7 = new Discord.Client();
 

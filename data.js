@@ -1,6 +1,6 @@
 "use strict";
 
-const {google} = require("googleapis");
+import {google} from "googleapis";
 
 const loadData = async tabName => {
 	let auth = new google.auth.GoogleAuth({
@@ -14,4 +14,4 @@ const loadData = async tabName => {
 	})).data.values;
 };
 
-module.exports = {loadData};
+export {loadData};
