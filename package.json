@@ -1,12 +1,20 @@
 {
-  "name": "Mee7",
+  "name": "mee7",
   "author": "Cubeur-manchot",
-  "description": "Discord bot for design commands.",
+  "description": "Discord bot for design commands in Cubeur Francophones server.",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
+  "homepage": "https://github.com/Cubeur-manchot/MEE7#readme",
+  "repository": {
+	"type": "git",
+	"url": "git+https://github.com/Cubeur-manchot/MEE7.git"
+  },
+  "bugs": {
+	"url": "https://github.com/Cubeur-manchot/MEE7/issues"
+  },
   "dependencies": {
-    "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
+    "discord.js": "^14.7.1",
     "fs": "0.0.1-security",
     "googleapis": "^72.0.0"
   },
