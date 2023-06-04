@@ -33,7 +33,8 @@ const setupGoogleSheetsAPICredentials = () => {
 };
 
 const isMee7CommandMessage = message => {
-	return message.content.match(/^![A-Za-z]/);
+	return message.content.startsWith(prefix)
+		&& !message.author.bot;
 };
 
 const onMessage = async message => {
