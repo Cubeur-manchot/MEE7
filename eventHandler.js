@@ -38,30 +38,38 @@ const isMee7CommandMessage = message => {
 };
 
 const onMessage = async message => {
-	if (isMee7CommandMessage(message)) {
-		let command = message.content.substring(1).toLowerCase();
-		if (command.startsWith("pblist")) {
-			let event = command.split(" ").filter(word => word.length)[1] ?? "3x3";
-			if (events.includes(event)) {
-				sendEmbedToChannel(message.channel, await getPbList(event));
+	if (!isMee7CommandMessage(message)) {
+		return;
+	}
+	let [commandName, argument] = message.content
+		.replace(new RegExp(`^${prefix}`), "")
+		.split(" ")
+		.filter(word => word !== "");
+	switch (commandName) {
+		case "help":
+			sendMessageToChannel(message.channel, helpMessage);
+			break;
+		case "pblist":
+			if (events.includes(argument)) {
+				sendEmbedToChannel(message.channel, await getPbList(argument));
 			} else {
 				sendMessageToChannel(message.channel,
-					`:x: Erreur : event ${event} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+					`:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
-		} else if (command === "bestcubes") {
+			break;
+		case "bestcubes":
 			sendEmbedToChannel(message.channel, await getBestCubes());
-		} else if (command === "restart") {
+			break;
+		case "restart":
 			if (message.author.id === "217709941081767937") { // message sent by Cubeur-manchot
 				sendMessageToChannel(message.channel, ":arrows_counterclockwise: Redémarrage...");
 				throw "Restarting according to Cubeur-manchot's command...";
 			} else {
-				sendMessageToChannel(message.channel, ":x: Seul <@217709941081767937> est autoriser à me redémarrer.");
+				sendMessageToChannel(message.channel, ":x: Erreur : Seul <@217709941081767937> est autoriser à me redémarrer.");
 			}
-		} else if (command === "ping") {
+		case "ping":
 			sendMessageToChannel(message.channel, ":ping_pong: Pong ! :ping_pong:");
-		} else if (command === "help") {
-			sendMessageToChannel(message.channel, helpMessage);
-		}
+			break;
 	}
 };
 
