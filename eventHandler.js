@@ -1,17 +1,20 @@
 "use strict";
 
+import Discord from "discord.js"
+import fs from "fs";
 import {sendEmbedToChannel, sendMessageToChannel} from "./messages.js";
 import {getPbList, events} from "./pbList.js";
 import {getBestCubes} from "./bestCubes.js";
 import {helpMessage} from "./help.js";
-import fs from 'fs';
 
 const prefix = "!";
 
 const onReady = Mee7 => {
-	Mee7.user.setActivity("filer un coup de main à MEE6")
-		.then(() => console.log("MEE7 is ready !"))
-		.catch(console.error);
+	Mee7.user.setPresence({
+		activities: [{name: "filer un coup de main à MEE6", type: Discord.ActivityType.Playing}],
+		status: "online",
+	});
+	console.log("MEE7 is ready !");
 	setupGoogleSheetsAPICredentials();
 };
 
