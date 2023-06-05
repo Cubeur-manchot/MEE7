@@ -2,10 +2,12 @@
 
 import Discord from "discord.js"
 import fs from "fs";
+
 import {sendEmbedToChannel, sendMessageToChannel} from "./messages.js";
 import {getPbList, events} from "./pbList.js";
 import {getBestCubes} from "./bestCubes.js";
 import {helpMessage} from "./help.js";
+import {errorLog, infoLog} from "./logger.js";
 
 const prefix = "!";
 
@@ -14,7 +16,7 @@ const onReady = Mee7 => {
 		activities: [{name: "filer un coup de main à MEE6", type: Discord.ActivityType.Playing}],
 		status: "online",
 	});
-	console.log("MEE7 is ready !");
+	infoLog("MEE7 is ready !");
 	setupGoogleSheetsAPICredentials();
 };
 
@@ -30,8 +32,13 @@ const setupGoogleSheetsAPICredentials = () => {
 		token_uri: process.env.CREDENTIALS_token_uri,
 		auth_provider_x509_cert_url: process.env.CREDENTIALS_auth_provider_x509_cert_url,
 		client_x509_cert_url: process.env.CREDENTIALS_client_x509_cert_url
-	}), function (err) {
-		if (err) {throw err;} else {console.log("Google spreadsheets credentials file written successfully !")}
+	}), writeFileError => {
+		if (writeFileError) {
+			errorLog(`Failed to write credentials : ${writeFileError}`);
+			throw writeFileError;
+		} else {
+			infoLog("Google spreadsheets credentials file written successfully !")
+		}
 	});
 };
 
