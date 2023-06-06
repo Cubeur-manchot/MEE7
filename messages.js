@@ -1,13 +1,25 @@
 "use strict";
 
-import Discord from "discord.js";
 import {errorLog} from "./logger.js";
 
-const sendMessageToChannel = (channel, message, options) =>
-	channel.send(message, options)
-		.catch(sendMessageErrorMessage => errorLog(`Fail to send message : ${sendMessageErrorMessage}`));
+const replyWithMessage = (initialMessage, answerMessage) => {
+	initialMessage.reply({
+		content: answerMessage,
+		allowedMentions: {
+			repliedUser: false
+		}
+	})
+	.catch(replyErrorMessage => errorLog(`Fail to answer with message : ${replyErrorMessage}`));
+};
 
-const sendEmbedToChannel = (channel, embed) =>
-	sendMessageToChannel(channel, {embeds: [embed]});
+const replyWithEmbed = (initialMessage, answerEmbed) => {
+	initialMessage.reply({
+		embeds: [answerEmbed],
+		allowedMentions: {
+			repliedUser: false
+		}
+	})
+	.catch(replyErrorMessage => errorLog(`Fail to answer with embed : ${replyErrorMessage}`));
+};
 
-export {sendMessageToChannel, sendEmbedToChannel};
+export {replyWithMessage, replyWithEmbed};

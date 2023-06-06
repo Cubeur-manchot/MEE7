@@ -3,13 +3,15 @@
 import Discord from "discord.js"
 import fs from "fs";
 
-import {sendEmbedToChannel, sendMessageToChannel} from "./messages.js";
+import {replyWithMessage, replyWithEmbed} from "./messages.js";
 import {getPbList, events} from "./pbList.js";
 import {getBestCubes} from "./bestCubes.js";
 import {helpMessage} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
 
 const prefix = "!";
+
+const CubeurManchotUserId = "217709941081767937";
 
 const onReady = Mee7 => {
 	Mee7.user.setPresence({
@@ -54,28 +56,27 @@ const onMessage = async message => {
 		.filter(word => word !== "");
 	switch (commandName) {
 		case "help":
-			sendMessageToChannel(message.channel, helpMessage);
+			replyWithMessage(message, helpMessage);
 			break;
 		case "pblist":
 			if (events.includes(argument)) {
-				sendEmbedToChannel(message.channel, await getPbList(argument));
+				replyWithEmbed(message, await getPbList(argument));
 			} else {
-				sendMessageToChannel(message.channel,
-					`:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+				replyWithMessage(message, `:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
 			break;
 		case "bestcubes":
-			sendEmbedToChannel(message.channel, await getBestCubes());
+			replyWithEmbed(message, await getBestCubes());
 			break;
 		case "restart":
-			if (message.author.id === "217709941081767937") { // message sent by Cubeur-manchot
-				sendMessageToChannel(message.channel, ":arrows_counterclockwise: Redémarrage...");
+			if (message.author.id === CubeurManchotUserId) {
+				replyWithMessage(message, ":arrows_counterclockwise: Redémarrage...");
 				throw "Restarting according to Cubeur-manchot's command...";
 			} else {
-				sendMessageToChannel(message.channel, ":x: Erreur : Seul <@217709941081767937> est autoriser à me redémarrer.");
+				replyWithMessage(message, `:x: Erreur : Seul <@${CubeurManchotUserId}> est autoriser à me redémarrer.`);
 			}
 		case "ping":
-			sendMessageToChannel(message.channel, ":ping_pong: Pong ! :ping_pong:");
+			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
 			break;
 	}
 };
