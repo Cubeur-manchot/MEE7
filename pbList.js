@@ -4,8 +4,10 @@ import {loadData} from "./data.js";
 
 const events = process.env.EVENTS.split(",");
 
+const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0"
+
 const getPbList = async event => {
-	let data = await loadData("14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0", `Liste des PB ${event}`);
+	let data = await loadData(pbListSheetId, `Liste des PB ${event}`);
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (data[lineIndex][0] && parseDurationSeconds(data[lineIndex][1])) { // check if both name and time exist and are non-empty

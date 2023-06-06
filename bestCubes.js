@@ -16,8 +16,10 @@ const bestCubeEmoji = {
 	"clock": "<:clock:890558131694891008>",
 };
 
+const bestCubesSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
+
 const getBestCubes = async () => {
-	let data = await loadData("14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0", "Meilleurs cubes");
+	let data = await loadData(bestCubesSheetId, "Meilleurs cubes");
 	let bestCubes = {wca: [], nonWca: []};
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (!data[lineIndex][0].startsWith("Event")) { // ignore header lines
