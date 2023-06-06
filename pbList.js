@@ -1,6 +1,7 @@
 "use strict";
 
 import {loadData} from "./data.js";
+import {createEmbed} from "./embedBuilder.js";
 
 const events = process.env.EVENTS.split(",");
 
@@ -50,14 +51,11 @@ const getPbList = async event => {
 			}
 		}
 	}
-	return {
-		color: "#ffbf00",
-		title: `PB single des membres du serveur (${event})`,
-		url: "https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing",
-		description: "",
-		fields: embedFields,
-		timestamp: new Date()
-	};
+	return createEmbed(
+		`PB single des membres du serveur (${event})`,
+		`https://docs.google.com/spreadsheets/d/${pbListSheetId}/edit?usp=sharing`,
+		embedFields
+	);
 };
 
 const parseDurationSeconds = durationString => {

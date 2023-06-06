@@ -1,6 +1,7 @@
 "use strict";
 
 import {loadData} from "./data.js";
+import {createEmbed} from "./embedBuilder.js";
 
 const bestCubeEmoji = {
 	"2x2": "<:2x2x2:889220192842969148>",
@@ -47,11 +48,10 @@ const getBestCubes = async () => {
 		nonWcaFormattedList += `\n**${bestCube.eventName}** : ${bestCube.flagships}`;
 	}
 	nonWcaFormattedList = nonWcaFormattedList.substring(1); // remove first line return
-	return {
-		color: "#ffbf00",
-		title: "Meilleurs cubes",
-		url: "https://docs.google.com/spreadsheets/d/14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0/edit?usp=sharing",
-		fields: [
+	return createEmbed(
+		"Meilleurs cubes",
+		`https://docs.google.com/spreadsheets/d/${bestCubesSheetId}/edit?usp=sharing`,
+		[
 			{
 				name: "WCA",
 				value: wcaFormattedList
@@ -59,9 +59,8 @@ const getBestCubes = async () => {
 				name: "Non-WCA",
 				value: nonWcaFormattedList
 			}
-		],
-		timestamp: new Date()
-	};
+		]
+	);
 };
 
 export {getBestCubes};
