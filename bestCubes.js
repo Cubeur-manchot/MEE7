@@ -38,16 +38,12 @@ const getBestCubes = async () => {
 			}
 		}
 	}
-	let wcaFormattedList = "";
-	for (let bestCube of bestCubes.wca) {
-		wcaFormattedList += `\n${bestCube.emoji} ${bestCube.flagships}`;
-	}
-	wcaFormattedList = wcaFormattedList.substring(1); // remove first line return
-	let nonWcaFormattedList = "";
-	for (let bestCube of bestCubes.nonWca) {
-		nonWcaFormattedList += `\n**${bestCube.eventName}** : ${bestCube.flagships}`;
-	}
-	nonWcaFormattedList = nonWcaFormattedList.substring(1); // remove first line return
+	let wcaFormattedList = bestCubes.wca
+		.map(bestCube => `${bestCube.emoji} ${bestCube.flagships}`)
+		.join("\n");
+	let nonWcaFormattedList = bestCubes.nonWca
+		.map(bestCube => `**${bestCube.eventName}** : ${bestCube.flagships}`)
+		.join("\n");
 	return createEmbed(
 		"Meilleurs cubes",
 		`https://docs.google.com/spreadsheets/d/${bestCubesSheetId}/edit?usp=sharing`,
