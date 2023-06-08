@@ -17,7 +17,9 @@ const bestCubeEmoji = {
 	"clock": "<:clock:890558131694891008>",
 };
 
+const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square One", "Clock"];
 const bestCubesSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
+const bestCubesNewSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
 
 const getBestCubes = async () => {
 	let data = await loadData(bestCubesSheetId, "Meilleurs cubes");
@@ -59,4 +61,53 @@ const getBestCubes = async () => {
 	);
 };
 
-export {getBestCubes};
+const getNewBestCubes = async (eventName = wcaEvents[0]) => {
+	let data = await loadData(bestCubesNewSheetId, "Meilleurs cubes");
+	data.shift(); // remove header line
+	let parsedData = data
+		.map(dataRaw => {
+			let [eventName, model, price, information] = dataRaw;
+			return eventName.length && model && model.length && price && price.length
+				? {
+					eventName: eventName,
+					model: model,
+					price: parseFloat(price.replace(/,/g, ".")),
+					information: information,
+					emoji: bestCubeEmoji[eventName]
+				}
+				: null;
+		})
+		.filter(raw => raw !== null);
+	let embedFields = [];
+	if (wcaEvents.includes(eventName)) {
+		let filteredData = parsedData
+			.filter(dataRaw => dataRaw.eventName === eventName)
+			.sort((firstCube, secondCube) => secondCube.price - firstCube.price);
+		for (let cube of filteredData) {
+			embedFields.push({
+				name: cube.model,
+				value: [`__${cube.price}€__`, cube.information].join("\n"),
+				inline: true
+			});
+		}
+	} else {
+		let filteredData = parsedData
+			.filter(dataRaw => !wcaEvents.includes(dataRaw.eventName));
+		for (let cube of filteredData) {
+			embedFields.push({
+				name: cube.eventName,
+				value: [cube.model, `__${cube.price}€__`, cube.information].join("\n"),
+				inline: true
+			});
+		}
+	}
+	return {
+		embed: createEmbed(
+			`Meilleurs cubes (${eventName})`,
+			`https://docs.google.com/spreadsheets/d/${bestCubesNewSheetId}/edit?usp=sharing`,
+			embedFields
+		),
+	};
+};
+
+export {wcaEvents, getBestCubes, getNewBestCubes};
