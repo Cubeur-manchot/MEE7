@@ -2,9 +2,17 @@
 
 import {errorLog} from "./logger.js";
 
-const replyWithMessage = (initialMessage, answerMessage) => {
+const replyWithMessage = (initialMessage, answerMessage) => replyMessage(initialMessage, answerMessage, null, null);
+
+const replyWithEmbed = (initialMessage, answerEmbed) => replyMessage(initialMessage, null, answerEmbed, null);
+
+const replyWithEmbedAndComponents = (initialMessage, answer) => replyMessage(initialMessage, null, answer.embed, answer.components);
+
+const replyMessage = (initialMessage, textContent, embed, components) => {
 	initialMessage.reply({
-		content: answerMessage,
+		content: textContent,
+		embeds: [embed],
+		components: components,
 		allowedMentions: {
 			repliedUser: false
 		}
@@ -12,14 +20,4 @@ const replyWithMessage = (initialMessage, answerMessage) => {
 	.catch(replyErrorMessage => errorLog(`Fail to answer with message : ${replyErrorMessage}`));
 };
 
-const replyWithEmbed = (initialMessage, answerEmbed) => {
-	initialMessage.reply({
-		embeds: [answerEmbed],
-		allowedMentions: {
-			repliedUser: false
-		}
-	})
-	.catch(replyErrorMessage => errorLog(`Fail to answer with embed : ${replyErrorMessage}`));
-};
-
-export {replyWithMessage, replyWithEmbed};
+export {replyWithMessage, replyWithEmbed, replyWithEmbedAndComponents};
