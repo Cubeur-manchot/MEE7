@@ -4,14 +4,14 @@ import {errorLog} from "./logger.js";
 
 const replyWithMessage = (initialMessage, answerMessage) => replyMessage(initialMessage, answerMessage, null, null);
 
-const replyWithEmbed = (initialMessage, answerEmbed) => replyMessage(initialMessage, null, answerEmbed, null);
+const replyWithEmbed = (initialMessage, answerEmbed) => replyMessage(initialMessage, null, [answerEmbed], null);
 
-const replyWithEmbedAndComponents = (initialMessage, answer) => replyMessage(initialMessage, null, answer.embed, answer.components);
+const replyWithEmbedAndComponents = (initialMessage, answer) => replyMessage(initialMessage, null, answer.embeds, answer.components);
 
-const replyMessage = (initialMessage, textContent, embed, components) => {
+const replyMessage = (initialMessage, textContent, embeds, components) => {
 	initialMessage.reply({
 		content: textContent,
-		embeds: [embed],
+		embeds: embeds,
 		components: components,
 		allowedMentions: {
 			repliedUser: false

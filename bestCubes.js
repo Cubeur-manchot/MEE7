@@ -2,6 +2,7 @@
 
 import {loadData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
+import {createRowWithSelectComponents} from "./componentBuilder.js";
 
 const bestCubeEmoji = {
 	"2x2": "<:2x2x2:889220192842969148>",
@@ -18,8 +19,12 @@ const bestCubeEmoji = {
 };
 
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square One", "Clock"];
+const events = [...wcaEvents, "non-WCA"];
+
 const bestCubesSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
 const bestCubesNewSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
+
+const bestCubesStringSelectCustomId = "bestCubesStringSelectCustomId";
 
 const getBestCubes = async () => {
 	let data = await loadData(bestCubesSheetId, "Meilleurs cubes");
@@ -61,7 +66,7 @@ const getBestCubes = async () => {
 	);
 };
 
-const getNewBestCubes = async (eventName = wcaEvents[0]) => {
+const getNewBestCubes = async (eventName = events[0]) => {
 	let data = await loadData(bestCubesNewSheetId, "Meilleurs cubes");
 	data.shift(); // remove header line
 	let parsedData = data
@@ -101,13 +106,22 @@ const getNewBestCubes = async (eventName = wcaEvents[0]) => {
 			});
 		}
 	}
+	let selectOptions = events
+		.map(eventName => {
+			return {
+				label: eventName,
+				emoji: bestCubeEmoji[eventName],
+				value: eventName
+			};
+		});
 	return {
-		embed: createEmbed(
+		embeds: [createEmbed(
 			`Meilleurs cubes (${eventName})`,
 			`https://docs.google.com/spreadsheets/d/${bestCubesNewSheetId}/edit?usp=sharing`,
 			embedFields
-		),
+		)],
+		components: createRowWithSelectComponents(selectOptions, eventName, bestCubesStringSelectCustomId)
 	};
 };
 
-export {wcaEvents, getBestCubes, getNewBestCubes};
+export {events, bestCubesStringSelectCustomId, getBestCubes, getNewBestCubes};

@@ -3,9 +3,9 @@
 import Discord from "discord.js";
 import fs from "fs";
 
-import {replyWithMessage, replyWithEmbed} from "./messages.js";
-import {getBestCubes} from "./bestCubes.js";
+import {replyWithMessage, replyWithEmbed, replyWithEmbedAndComponents} from "./messages.js";
 import {getPbList, pbListEvents} from "./pbList.js";
+import {events, bestCubesStringSelectCustomId, getBestCubes, getNewBestCubes} from "./bestCubes.js";
 import {helpMessage} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
 
@@ -46,6 +46,10 @@ const isMee7CommandMessage = message => {
 		&& !message.author.bot;
 };
 
+const isMee7Message = message => {
+	return message.author.id === message.client.user.id;
+};
+
 const onMessage = async message => {
 	if (!isMee7CommandMessage(message)) {
 		return;
@@ -78,7 +82,28 @@ const onMessage = async message => {
 		case "ping":
 			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
 			break;
+		case "newbestcubes":
+			if (!argument || events.includes(argument)) {
+				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
+			} else {
+				replyWithMessage(message, `:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+			}
+			break;
 	}
 };
 
-export {onReady, onMessage};
+const onInteraction = async interaction => {
+	if (interaction.isMessageComponent()) {
+		if (!isMee7Message(interaction.message)) {
+			return;
+		}
+		if (interaction.customId === bestCubesStringSelectCustomId) {
+			let interactionValue = interaction.values[0];
+			let answer = await getNewBestCubes(interactionValue);
+			interaction.update(answer)
+			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
+		}
+	}
+};
+
+export {onReady, onMessage, onInteraction};
