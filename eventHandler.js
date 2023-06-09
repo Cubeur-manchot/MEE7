@@ -83,6 +83,7 @@ const onMessage = async message => {
 			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
 			break;
 		case "newbestcubes":
+			argument = `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA");
 			if (!argument || events.includes(argument)) {
 				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
 			} else {

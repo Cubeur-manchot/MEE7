@@ -11,15 +11,16 @@ const bestCubeEmoji = {
 	"5x5": "<:5x5x5:891306835401908334>",
 	"6x6": "<:6x6x6:889220222664441856>",
 	"7x7": "<:7x7x7:891308319778668544>",
-	"megaminx": "<:megaminx:890558131569066014>",
-	"pyraminx": "<:pyraminx:890558130923143178>",
-	"skewb": "<:skewb:890558131183181824>",
-	"square one": "<:squane:890558131594203146>",
-	"clock": "<:clock:890558131694891008>",
+	"Megaminx": "<:megaminx:1116824663125938266>",
+	"Pyraminx": "<:pyraminx:890558130923143178>",
+	"Skewb": "<:skewb:890558131183181824>",
+	"Square one": "<:squane:890558131594203146>",
+	"Clock": "<:clock:890558131694891008>",
+	"Non-WCA": "<:nonwca:1116831265551810651>"
 };
 
-const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square One", "Clock"];
-const events = [...wcaEvents, "non-WCA"];
+const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];
+const events = [...wcaEvents, "Non-WCA"];
 
 const bestCubesSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
 const bestCubesNewSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
