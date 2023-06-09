@@ -1,11 +1,11 @@
 "use strict";
 
-import Discord from "discord.js"
+import Discord from "discord.js";
 import fs from "fs";
 
 import {replyWithMessage, replyWithEmbed} from "./messages.js";
-import {getPbList, events} from "./pbList.js";
 import {getBestCubes} from "./bestCubes.js";
+import {getPbList, pbListEvents} from "./pbList.js";
 import {helpMessage} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
 
@@ -59,10 +59,10 @@ const onMessage = async message => {
 			replyWithMessage(message, helpMessage);
 			break;
 		case "pblist":
-			if (events.includes(argument)) {
+			if (pbListEvents.includes(argument)) {
 				replyWithEmbed(message, await getPbList(argument));
 			} else {
-				replyWithMessage(message, `:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+				replyWithMessage(message, `:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${pbListEvents.join(", ")}.`);
 			}
 			break;
 		case "bestcubes":

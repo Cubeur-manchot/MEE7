@@ -3,7 +3,7 @@
 import {loadData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 
-const events = process.env.EVENTS.split(",");
+const pbListEvents = process.env.EVENTS.split(",");
 
 const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0"
 
@@ -67,4 +67,4 @@ const parseDurationSeconds = durationString => {
 	}
 };
 
-export {getPbList, events};
+export {getPbList, pbListEvents};
