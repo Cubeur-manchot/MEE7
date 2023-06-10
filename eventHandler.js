@@ -56,7 +56,7 @@ const onMessage = async message => {
 	}
 	let [commandName, argument] = message.content
 		.replace(new RegExp(`^${prefix}`), "")
-		.split(" ")
+		.split(/\s/g)
 		.filter(word => word !== "");
 	switch (commandName) {
 		case "help":
