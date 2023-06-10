@@ -67,7 +67,7 @@ const getBestCubes = async () => {
 	);
 };
 
-const getNewBestCubes = async (eventName = events[0]) => {
+const getNewBestCubes = async eventName => {
 	let data = await loadData(bestCubesNewSheetId, "Meilleurs cubes");
 	data.shift(); // remove header line
 	let parsedData = data

@@ -83,11 +83,11 @@ const onMessage = async message => {
 			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
 			break;
 		case "newbestcubes":
-			argument = `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA");
-			if (!argument || events.includes(argument)) {
+			argument = argument ? `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA") : events[0];
+			if (events.includes(argument)) {
 				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
 			} else {
-				replyWithMessage(message, `:x: Erreur : Event ${argument} non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+				replyWithMessage(message, `:x: Erreur : Event "${argument}" non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
 			break;
 	}
