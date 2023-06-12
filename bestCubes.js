@@ -101,8 +101,8 @@ const getNewBestCubes = async eventName => {
 			.filter(dataRaw => !wcaEvents.includes(dataRaw.eventName));
 		for (let cube of filteredData) {
 			embedFields.push({
-				name: cube.eventName,
-				value: [cube.model, `__${cube.price}€__`, cube.information].join("\n"),
+				name: "__" + cube.eventName + "__",
+				value: `${cube.model}${" ".repeat(3)}(${cube.price}€)`,
 				inline: true
 			});
 		}
