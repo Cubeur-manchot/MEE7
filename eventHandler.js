@@ -70,7 +70,12 @@ const onMessage = async message => {
 			}
 			break;
 		case "bestcubes":
-			replyWithEmbed(message, await getBestCubes());
+			argument = argument ? `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA") : events[0];
+			if (events.includes(argument)) {
+				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
+			} else {
+				replyWithMessage(message, `:x: Erreur : Event "${argument}" non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
+			}
 			break;
 		case "restart":
 			if (message.author.id === CubeurManchotUserId) {
@@ -81,14 +86,6 @@ const onMessage = async message => {
 			}
 		case "ping":
 			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
-			break;
-		case "newbestcubes":
-			argument = argument ? `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA") : events[0];
-			if (events.includes(argument)) {
-				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
-			} else {
-				replyWithMessage(message, `:x: Erreur : Event "${argument}" non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
-			}
 			break;
 	}
 };
