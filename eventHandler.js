@@ -52,6 +52,7 @@ const onMessage = async message => {
 	if (!matchingCommand) {
 		return;
 	}
+	if (matchingCommand.options) {
 		if (argument) { // option is provided, check validity
 			argument = `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA");
 			if (!matchingCommand.options.includes(argument)) {
