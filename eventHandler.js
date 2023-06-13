@@ -77,13 +77,6 @@ const onMessage = async message => {
 				replyWithMessage(message, `:x: Erreur : Event "${argument}" non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
 			break;
-		case "restart":
-			if (message.author.id === CubeurManchotUserId) {
-				replyWithMessage(message, ":arrows_counterclockwise: Redémarrage...");
-				throw "Restarting according to Cubeur-manchot's command...";
-			} else {
-				replyWithMessage(message, `:x: Erreur : Seul <@${CubeurManchotUserId}> est autoriser à me redémarrer.`);
-			}
 		case "ping":
 			replyWithMessage(message, ":ping_pong: Pong ! :ping_pong:");
 			break;
