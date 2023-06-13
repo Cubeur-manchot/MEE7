@@ -78,6 +78,7 @@ const getBestCubes = async eventName => {
 		embeds: [createEmbed(
 			`Meilleurs cubes (${eventName})`,
 			`https://docs.google.com/spreadsheets/d/${bestCubesSheetId}/edit?usp=sharing`,
+			null,
 			embedFields
 		)],
 		components: createRowWithSelectComponents(selectOptions, eventName, bestCubesStringSelectCustomId)

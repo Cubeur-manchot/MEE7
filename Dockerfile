@@ -6,6 +6,6 @@ COPY package.json .
 
 RUN npm install
 
-COPY index.js logger.js embedBuilder.js componentBuilder.js eventHandler.js messages.js data.js pbList.js bestCubes.js help.js /
+COPY index.js logger.js embedBuilder.js componentBuilder.js eventHandler.js messages.js data.js pbList.js bestCubes.js help.js ping.js /
 
 CMD ["node", "index.js"]

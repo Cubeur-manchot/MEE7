@@ -51,11 +51,14 @@ const getPbList = async event => {
 			}
 		}
 	}
-	return createEmbed(
-		`PB single des membres du serveur (${event})`,
-		`https://docs.google.com/spreadsheets/d/${pbListSheetId}/edit?usp=sharing`,
-		embedFields
-	);
+	return {
+		embeds: [createEmbed(
+			`PB single des membres du serveur (${event})`,
+			`https://docs.google.com/spreadsheets/d/${pbListSheetId}/edit?usp=sharing`,
+			null,
+			embedFields
+		)]
+	};
 };
 
 const parseDurationSeconds = durationString => {

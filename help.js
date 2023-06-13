@@ -1,10 +1,24 @@
 "use strict";
 
+import {commands, prefix} from "./eventHandler.js";
+import {createEmbed} from "./embedBuilder.js";
 
-import {pbListEvents} from "./pbList.js";
-const helpMessage = "`!help` : Affiche cette aide.\n\n"
-    + "`!bestcubes` : affiche la liste des meilleurs cubes du moment.\n\n"
-    + "`!pblist [event]` : affiche la liste des <:PB:369399684156096512> <:single:369420530098372608> des membres du serveur pour un event "
-    + `(par défaut : <:3x3:693841238461382739>, events supportés : ${pbListEvents.join(", ")}).`;
+const getHelp = () => {
+	return {
+		embeds: [
+			createEmbed(
+				"Aide",
+				null,
+				"Voici les commandes actuellement reconnues :",
+				commands
+					.map(command => {return {
+						name: `${prefix}${command.name}`,
+						value: `\`${prefix}${command.name}${command.options ? ` ${command.options[0]}` : ""}\` : `
+							+ `${command.description}${command.options ? `\nOptions valides : ${command.options.map(option => `\`${option}\``).join(", ")}.` : ""}`,
+					}})
+			)
+		]
+	};
+};
 
-export {helpMessage};
+export {getHelp};
