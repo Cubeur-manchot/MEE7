@@ -62,8 +62,6 @@ const onMessage = async message => {
 			argument = matchingCommand.options[0];
 		}
 	}
-	let answer = await matchingCommand.method(argument);
-	console.log(answer)
 	replyWithEmbedAndComponents(message, await matchingCommand.method(argument));
 };
 
