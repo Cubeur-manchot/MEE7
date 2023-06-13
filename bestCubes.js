@@ -22,53 +22,12 @@ const bestCubeEmoji = {
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];
 const events = [...wcaEvents, "Non-WCA"];
 
-const bestCubesSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
-const bestCubesNewSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
+const bestCubesSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
 
 const bestCubesStringSelectCustomId = "bestCubesStringSelectCustomId";
 
-const getBestCubes = async () => {
+const getBestCubes = async eventName => {
 	let data = await loadData(bestCubesSheetId, "Meilleurs cubes");
-	let bestCubes = {wca: [], nonWca: []};
-	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		if (!data[lineIndex][0].startsWith("Event")) { // ignore header lines
-			let emoji = bestCubeEmoji[data[lineIndex][0]];
-			if (emoji) {
-				bestCubes.wca.push({
-					emoji: emoji,
-					flagships: data[lineIndex][1]
-				});
-			} else {
-				bestCubes.nonWca.push({
-					eventName: data[lineIndex][0],
-					flagships: data[lineIndex][1]
-				});
-			}
-		}
-	}
-	let wcaFormattedList = bestCubes.wca
-		.map(bestCube => `${bestCube.emoji} ${bestCube.flagships}`)
-		.join("\n");
-	let nonWcaFormattedList = bestCubes.nonWca
-		.map(bestCube => `**${bestCube.eventName}** : ${bestCube.flagships}`)
-		.join("\n");
-	return createEmbed(
-		"Meilleurs cubes",
-		`https://docs.google.com/spreadsheets/d/${bestCubesSheetId}/edit?usp=sharing`,
-		[
-			{
-				name: "WCA",
-				value: wcaFormattedList
-			}, {
-				name: "Non-WCA",
-				value: nonWcaFormattedList
-			}
-		]
-	);
-};
-
-const getNewBestCubes = async eventName => {
-	let data = await loadData(bestCubesNewSheetId, "Meilleurs cubes");
 	data.shift(); // remove header line
 	let parsedData = data
 		.map(dataRaw => {
@@ -118,11 +77,11 @@ const getNewBestCubes = async eventName => {
 	return {
 		embeds: [createEmbed(
 			`Meilleurs cubes (${eventName})`,
-			`https://docs.google.com/spreadsheets/d/${bestCubesNewSheetId}/edit?usp=sharing`,
+			`https://docs.google.com/spreadsheets/d/${bestCubesSheetId}/edit?usp=sharing`,
 			embedFields
 		)],
 		components: createRowWithSelectComponents(selectOptions, eventName, bestCubesStringSelectCustomId)
 	};
 };
 
-export {events, bestCubesStringSelectCustomId, getBestCubes, getNewBestCubes};
+export {events, bestCubesStringSelectCustomId, getBestCubes};

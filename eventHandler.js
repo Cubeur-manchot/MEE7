@@ -5,7 +5,7 @@ import fs from "fs";
 
 import {replyWithMessage, replyWithEmbed, replyWithEmbedAndComponents} from "./messages.js";
 import {getPbList, pbListEvents} from "./pbList.js";
-import {events, bestCubesStringSelectCustomId, getBestCubes, getNewBestCubes} from "./bestCubes.js";
+import {events, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {helpMessage} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
 
@@ -72,7 +72,7 @@ const onMessage = async message => {
 		case "bestcubes":
 			argument = argument ? `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA") : events[0];
 			if (events.includes(argument)) {
-				replyWithEmbedAndComponents(message, await getNewBestCubes(argument));
+				replyWithEmbedAndComponents(message, await getBestCubes(argument));
 			} else {
 				replyWithMessage(message, `:x: Erreur : Event "${argument}" non reconnu/supporté. Choix possibles : ${events.join(", ")}.`);
 			}
@@ -90,7 +90,7 @@ const onInteraction = async interaction => {
 		}
 		if (interaction.customId === bestCubesStringSelectCustomId) {
 			let interactionValue = interaction.values[0];
-			let answer = await getNewBestCubes(interactionValue);
+			let answer = await getBestCubes(interactionValue);
 			interaction.update(answer)
 			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
 		}
