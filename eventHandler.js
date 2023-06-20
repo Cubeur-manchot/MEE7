@@ -75,16 +75,17 @@ const commands = [
 	}
 ];
 
-const onInteraction = async interaction => {
+const onInteraction = interaction => {
 	if (interaction.isMessageComponent()) {
 		if (!isMee7Message(interaction.message)) {
 			return;
 		}
 		if (interaction.customId === bestCubesStringSelectCustomId) {
-			let interactionValue = interaction.values[0];
-			let answer = await getBestCubes(interactionValue);
-			interaction.update(answer)
-			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
+			getBestCubes(interaction.values[0])
+			.then(answer =>
+				interaction.update(answer)
+				.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`))
+			);
 		}
 	}
 };
