@@ -2,12 +2,19 @@
 
 import {google} from "googleapis";
 
+const auth = new google.auth.GoogleAuth({
+	credentials: Object.fromEntries(
+		Object.entries(process.env)
+			.filter(entry => entry[0].startsWith("CREDENTIALS_"))
+			.map(entry => [entry[0].replace("CREDENTIALS_", ""), entry[1]])
+	),
+	scopes: "https://www.googleapis.com/auth/spreadsheets"
+});
+
+const values = google.sheets({version: "v4", auth: await auth.getClient()}).spreadsheets.values;
+
 const loadData = async (spreadsheetId, tabName) => {
-	let auth = new google.auth.GoogleAuth({
-		keyFile: "credentials.json",
-		scopes: "https://www.googleapis.com/auth/spreadsheets"
-	});
-	return (await google.sheets({version: "v4", auth: await auth.getClient()}).spreadsheets.values.get({
+	return (await values.get({
 		auth: auth,
 		spreadsheetId: spreadsheetId,
 		range: tabName
