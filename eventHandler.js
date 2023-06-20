@@ -33,7 +33,10 @@ const onMessage = message => {
 	}
 	if (matchingCommand.options) {
 		if (argument) { // option is provided, check validity
-			argument = `${argument[0].toUpperCase()}${argument.slice(1).toLowerCase()}`.replace("wca", "WCA");
+			argument = argument.toLowerCase().replace("wca", "WCA");
+			if (argument.length > 4) { // long names
+				argument = `${argument[0].toUpperCase()}${argument.slice(1)}`;
+			}
 			if (!matchingCommand.options.includes(argument)) {
 				replyWithMessage(message, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.options.join(", ")}.`);
 			}
