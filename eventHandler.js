@@ -19,7 +19,7 @@ const onReady = Mee7 => {
 	infoLog("MEE7 is ready !");
 };
 
-const onMessage = async message => {
+const onMessage = message => {
 	if (!isMee7CommandMessage(message)) {
 		return;
 	}
@@ -41,7 +41,8 @@ const onMessage = async message => {
 			argument = matchingCommand.options[0];
 		}
 	}
-	replyWithEmbedAndComponents(message, await matchingCommand.method(argument));
+	matchingCommand.method(argument)
+	.then(answer => replyWithEmbedAndComponents(message, answer));
 };
 
 const isMee7CommandMessage = message => {
