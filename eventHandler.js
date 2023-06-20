@@ -1,7 +1,6 @@
 "use strict";
 
 import Discord from "discord.js";
-import fs from "fs";
 
 import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {pbListEvents, getPbList} from "./pbList.js";
@@ -18,26 +17,6 @@ const onReady = Mee7 => {
 		status: "online",
 	});
 	infoLog("MEE7 is ready !");
-	setupGoogleSheetsAPICredentials();
-};
-
-const setupGoogleSheetsAPICredentials = () => {
-	let credentials = {};
-	for (let credentialProperty of Object.keys(process.env).filter(property => property.startsWith("CREDENTIALS_"))) {
-		credentials[credentialProperty.replace("CREDENTIALS_", "")] = process.env[credentialProperty];
-	}
-	fs.writeFile(
-		"credentials.json",
-		JSON.stringify(credentials),
-		writeFileError => {
-			if (writeFileError) {
-				errorLog(`Failed to write credentials : ${writeFileError}`);
-				throw writeFileError;
-			} else {
-				infoLog("Google spreadsheets credentials file written successfully !")
-			}
-		}
-	);
 };
 
 const onMessage = async message => {
