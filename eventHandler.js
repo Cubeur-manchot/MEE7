@@ -39,6 +39,7 @@ const onMessage = message => {
 			}
 			if (!matchingCommand.options.includes(argument)) {
 				replyWithMessage(message, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.options.join(", ")}.`);
+				return;
 			}
 		} else { // default option
 			argument = matchingCommand.options[0];
