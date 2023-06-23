@@ -4,6 +4,10 @@ const infoLog = infoMessage => {
 	console.log(`${getDate()}[Info] ${infoMessage}`);
 };
 
+const warningLog = infoMessage => {
+	console.log(`${getDate()}[Warning] ${infoMessage}`);
+};
+
 const errorLog = errorMessage => {
 	console.error(`${getDate()}[Error] ${errorMessage}`);
 };
@@ -16,4 +20,4 @@ const getDate = () => {
 
 const getStringTwoDigits = value => `${value < 10 ? "0" : ""}${value}`;
 
-export {infoLog, errorLog};
+export {infoLog, warningLog, errorLog};
