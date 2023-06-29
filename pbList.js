@@ -2,13 +2,17 @@
 
 import {loadData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
+import {createRowWithSelectComponents} from "./componentBuilder.js";
+import {eventEmoji} from "./eventsEmojis.js";
 
 const pbListEvents = process.env.EVENTS.split(",");
 
 const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0"
 
-const getPbList = async event => {
-	let data = await loadData(pbListSheetId, `Liste des PB ${event}`);
+const pbListStringSelectCustomId = "pbListStringSelectCustomId";
+
+const getPbList = async eventName => {
+	let data = await loadData(pbListSheetId, `Liste des PB ${eventName}`);
 	let PBList = [];
 	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
 		if (data[lineIndex][0] && parseDurationSeconds(data[lineIndex][1])) { // check if both name and time exist and are non-empty
@@ -17,7 +21,7 @@ const getPbList = async event => {
 				time: data[lineIndex][1]
 			});
 		} else {
-			throw `Error : Invalid format (sheet = Liste des PB ${event}, lineIndex = ${lineIndex}).`;
+			throw `Error : Invalid format (sheet = Liste des PB ${eventName}, lineIndex = ${lineIndex}).`;
 		}
 	}
 	PBList.sort((firstElement, secondElement) => {
@@ -51,13 +55,22 @@ const getPbList = async event => {
 			}
 		}
 	}
+	let selectOptions = pbListEvents
+		.map(eventName => {
+			return {
+				label: eventName,
+				emoji: eventEmoji[eventName],
+				value: eventName
+			};
+		});
 	return {
 		embeds: [createEmbed(
-			`PB single des membres du serveur (${event})`,
+			`PB single des membres du serveur (${eventName})`,
 			`https://docs.google.com/spreadsheets/d/${pbListSheetId}/edit?usp=sharing`,
 			null,
 			embedFields
-		)]
+		)],
+		components: createRowWithSelectComponents(selectOptions, eventName, pbListStringSelectCustomId)
 	};
 };
 
@@ -70,4 +83,4 @@ const parseDurationSeconds = durationString => {
 	}
 };
 
-export {getPbList, pbListEvents};
+export {pbListEvents, pbListStringSelectCustomId, getPbList};

@@ -4,7 +4,7 @@ import Discord from "discord.js";
 
 import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
-import {pbListEvents, getPbList} from "./pbList.js";
+import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {events, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
@@ -27,7 +27,8 @@ const commands = [
 			required: true,
 			choices: pbListEvents
 		},
-		method: getPbList
+		method: getPbList,
+		stringSelectCustomId: pbListStringSelectCustomId
 	},
 	{
 		name: "bestcubes",
@@ -38,7 +39,8 @@ const commands = [
 			required: false,
 			choices: events
 		},
-		method: getBestCubes
+		method: getBestCubes,
+		stringSelectCustomId: bestCubesStringSelectCustomId
 	},
 	{
 		name: "ping",
@@ -104,13 +106,15 @@ const onInteraction = interaction => {
 		if (!isMee7Message(interaction.message)) {
 			return;
 		}
-		if (interaction.customId === bestCubesStringSelectCustomId) {
-			getBestCubes(interaction.values[0])
-			.then(answer =>
-				interaction.update(answer)
-				.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`))
-			);
+		let matchingCommand = commands.find(command => command.stringSelectCustomId === interaction.customId);
+		if (!matchingCommand) {
+			return;
 		}
+		matchingCommand.method(interaction.values[0])
+		.then(answer =>
+			interaction.update(answer)
+			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`))
+		);
 	} else if (interaction.isChatInputCommand()) {
 		if (!isInteractionForMee7Application(interaction)) {
 			return;
