@@ -77,6 +77,9 @@ const areCommandsSetsEqual = (currentCommands, newCommands) => {
 					|| currentCommandOption.description !== newCommandOption.description) {
 					return false;
 				}
+				if (currentCommandOption.required ^ newCommandOption.required) {
+					return false;
+				}
 				if (currentCommandOption.choices?.length || newCommandOption.choices?.length) {
 					// check command option choices
 					if (!currentCommandOption.choices?.length || !newCommandOption.choices?.length

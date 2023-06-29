@@ -24,7 +24,7 @@ const commands = [
 		argument: {
 			name: "event",
 			description: "Choix de l'event",
-			required: true,
+			required: false,
 			choices: pbListEvents
 		},
 		method: getPbList,
