@@ -12,7 +12,7 @@ const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
 const pbListStringSelectCustomId = "pbListStringSelectCustomId";
 
 const getPbList = async eventName => {
-	let data = await loadData(pbListSheetId, "Dash lessive tout en un");
+	let data = await loadData(pbListSheetId, "Liste des PB");
 	let timeColumnNumber = data[0].findIndex(headerLabel => headerLabel === eventName);
 	let pbList = parseData(data, timeColumnNumber);
 	pbList = removeDuplicates(pbList);
