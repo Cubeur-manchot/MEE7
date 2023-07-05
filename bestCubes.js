@@ -3,7 +3,7 @@
 import {loadData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
-import {eventEmoji} from "./eventsEmojis.js";
+import {eventEmoji} from "./events.js";
 
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];
 const bestCubesEvents = [...wcaEvents, "Non-WCA"];

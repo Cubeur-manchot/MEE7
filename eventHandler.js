@@ -4,6 +4,7 @@ import Discord from "discord.js";
 
 import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
+import {cleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {events, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {getPong} from "./ping.js";
@@ -65,10 +66,7 @@ const treatCommand = (commandToReply, commandName, argument) => {
 	}
 	if (matchingCommand.argument) {
 		if (argument) {
-			argument = argument.toLowerCase().replace("wca", "WCA");
-			if (argument.length > 4) { // long names
-				argument = `${argument[0].toUpperCase()}${argument.slice(1)}`;
-			}
+			argument = cleanEventName(argument);
 			if (!matchingCommand.argument.choices.includes(argument)) {
 				replyWithMessage(commandToReply, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
 				return;

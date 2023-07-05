@@ -3,58 +3,22 @@
 import {loadData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
-import {eventEmoji} from "./eventsEmojis.js";
+import {eventEmoji} from "./events.js";
 
 const pbListEvents = process.env.EVENTS.split(",");
 
-const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0"
+const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
 
 const pbListStringSelectCustomId = "pbListStringSelectCustomId";
 
 const getPbList = async eventName => {
-	let data = await loadData(pbListSheetId, `Liste des PB ${eventName}`);
-	let PBList = [];
-	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
-		if (data[lineIndex][0] && parseDurationSeconds(data[lineIndex][1])) { // check if both name and time exist and are non-empty
-			PBList.push({
-				member: data[lineIndex][0].replace(/'/g, "’"),
-				time: data[lineIndex][1]
-			});
-		} else {
-			throw `Error : Invalid format (sheet = Liste des PB ${eventName}, lineIndex = ${lineIndex}).`;
-		}
-	}
-	PBList.sort((firstElement, secondElement) => {
-		return parseDurationSeconds(firstElement.time) - parseDurationSeconds(secondElement.time);
-	});
-	let embedFields = [];
-	for (let groupsOfTen = 0; groupsOfTen < 100 && groupsOfTen >= 0; groupsOfTen += 10) {
-		let currentField = {
-			name: `${groupsOfTen + 1}-${groupsOfTen + 10}`,
-			value: "",
-			inline: true
-		};
-		for (let unit = 0; unit < 10; unit++) {
-			let rank = groupsOfTen + unit;
-			if (PBList[rank] !== undefined) {
-				currentField.value = `${rank + 1} - ${PBList[rank].member} (${PBList[rank].time})\n${currentField.value}`;
-			} else {
-				unit = 10;
-				groupsOfTen = -11;
-			}
-		}
-		if (currentField.value !== "") {
-			currentField.value += "\n\u200b";
-			embedFields.unshift(currentField);
-			if (groupsOfTen % 20 === 0) { // add an empty field every two fields to keep only 2 columns
-				embedFields.unshift({
-					name: "\u200b",
-					value: "\u200b",
-					inline: true
-				})
-			}
-		}
-	}
+	let data = await loadData(pbListSheetId, "Dash lessive tout en un");
+	let timeColumnNumber = data[0].findIndex(headerLabel => headerLabel === eventName);
+	let pbList = parseData(data, timeColumnNumber);
+	pbList = removeDuplicates(pbList);
+	pbList = orderByTimeAscending(pbList);
+	pbList = filterTop100(pbList);
+	let embedFields = createEmbedFields(pbList);
 	let selectOptions = pbListEvents
 		.map(eventName => {
 			return {
@@ -74,13 +38,95 @@ const getPbList = async eventName => {
 	};
 };
 
-const parseDurationSeconds = durationString => {
-	if (durationString.includes(":")) {
-		let [minutes, seconds] = durationString.split(":");
-		return parseFloat(minutes) * 60 + parseFloat(seconds);
-	} else {
-		return parseFloat(durationString);
+const parseData = (data, timeColumnIndex) => {
+	let pbList = [];
+	for (let lineIndex = 1; lineIndex < data.length; lineIndex++) {
+		let [name, id, discordIdentifier] = data[lineIndex];
+		let rawTime = data[lineIndex][timeColumnIndex];
+		if (name && id && discordIdentifier && rawTime) {
+			let timeSeconds = parseDurationSeconds(data[lineIndex][timeColumnIndex]);
+			pbList.push({
+				member: {
+					name: name,
+					id: id,
+					discordIdentifier: discordIdentifier
+				},
+				time: {
+					raw: rawTime,
+					seconds: timeSeconds
+				}
+			});
+		}
 	}
+	return pbList;
 };
+
+const parseDurationSeconds = duration => {
+	switch (typeof duration) {
+		case "number":
+			return duration;
+		case "string":
+			return duration
+				.split(":")
+				.map(element => parseFloat(element))
+				.reverse()
+				.map((element, index) => element * Math.pow(60, index))
+				.reduce((partialSum, currentPartialTimeSeconds) => partialSum + currentPartialTimeSeconds, 0);
+	};
+};
+
+const removeDuplicates = pbList => { // todo : uncomment second unicity filter when all members have Discord unique identifier
+	let uniqueIds = pbList
+		.map(pbListElement => pbListElement.member.id)
+		.filter((id, _, idArray) => idArray.indexOf(id) === idArray.lastIndexOf(id));
+	/*let uniqueDiscordIdentifiers = pbList
+		.map(pbListElement => pbListElement.member.discordIdentifier)
+		.filter((memberDiscordIdentifier, _, discordIdentifierArray) => discordIdentifierArray.indexOf(memberDiscordIdentifier) === discordIdentifierArray.lastIndexOf(memberDiscordIdentifier));*/
+	return pbList
+		.filter(pbListElement => uniqueIds.includes(pbListElement.member.id))
+		//.filter(pbListElement => uniqueDiscordIdentifiers.includes(pbListElement.member.discordIdentifier));
+};
+
+const orderByTimeAscending = pbList =>
+	pbList.sort((firstPbListElement, secondPbListElement) => {
+		return firstPbListElement.time.seconds - secondPbListElement.time.seconds;
+	});
+
+const filterTop100 = pbList =>
+	pbList.slice(0, 100);
+
+const createEmbedFields = pbList => pbList
+	.reduce((partialResult, currentElement, currentIndex) => {
+		let groupIndex = Math.floor(currentIndex / 10);
+		(partialResult[groupIndex] = partialResult[groupIndex] || []).push(currentElement);
+		return partialResult;
+	}, [])
+	.map((pbListGroup, pbListGroupIndex) => {
+		return {
+			name: `${pbListGroupIndex * 10 + 10}-${pbListGroupIndex * 10 + 1}`,
+			value: [...pbListGroup
+				.map((pbListElement, pbListElementIndex) => {
+					let rank = pbListGroupIndex * 10 + pbListElementIndex + 1;
+					return `\`${rank < 10 ? " " : ""}${rank}\` <@${pbListElement.member.id}> (${pbListElement.time.raw})`;
+				})
+				.reverse(),
+				"\u200b"]
+				.join("\n"),
+			inline: true
+		};
+	})
+	.reverse()
+	.reduce((partialEmbedFieldsList, currentEmbedField, currentEmbedFieldIndex) => [
+		...partialEmbedFieldsList,
+		currentEmbedField,
+		currentEmbedFieldIndex % 2
+			? null
+			: {
+				name: "\u200b",
+				value: "\u200b",
+				inline: true
+			}
+		], [])
+	.filter(embedField => embedField !== null);
 
 export {pbListEvents, pbListStringSelectCustomId, getPbList};
