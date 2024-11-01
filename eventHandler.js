@@ -87,11 +87,11 @@ const onMessage = message => {
 	if (!isMee7CommandMessage(message)) {
 		return;
 	}
-	let [commandName, argument] = message.content
+	let [commandName, ...restOfTheMessage] = message.content
 		.replace(new RegExp(`^${prefix}`), "")
 		.split(/\s/g)
 		.filter(word => word !== "");
-	treatCommand(message, commandName, argument);
+	treatCommand(message, commandName, restOfTheMessage.join(" "));
 };
 
 const isMee7CommandMessage = message => {
