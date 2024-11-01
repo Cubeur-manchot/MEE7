@@ -18,24 +18,32 @@ const eventEmoji = {
 };
 
 const cleanEventName = eventName => {
-	eventName = eventName.toLowerCase();
-	switch (eventName) {
+	let eventNameLowerCase = eventName.toLowerCase();
+	if (
+		["2", "3", "4", "5", "6", "7"]
+		.map(cubeSize => new Array(2).fill(cubeSize))
+		.map(array => array.join("x"))
+		.includes(eventNameLowerCase)
+	) {
+		return eventNameLowerCase;
+	}
+	switch (eventNameLowerCase) {
 		case "mega":
 		case "pyra":
-			eventName = `${eventName}minx`;
+			eventNameLowerCase = `${eventNameLowerCase}minx`;
 		case "megaminx":
 		case "pyraminx":
 		case "skewb":
 		case "square one":
 		case "clock":
-			return `${eventName[0].toUpperCase()}${eventName.slice(1)}`;
+			return `${eventNameLowerCase[0].toUpperCase()}${eventNameLowerCase.slice(1)}`;
 		case "non-wca":
 			return "Non-WCA";
 		case "3bld":
 		case "oh":
 			return eventName.toUpperCase();
 		default:
-			return eventName;
+			return null; // unrecognized event name
 	};
 };
 
