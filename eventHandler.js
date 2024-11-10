@@ -2,7 +2,7 @@
 
 import Discord from "discord.js";
 
-import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
+import {replyWithSimpleMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
 import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
@@ -68,12 +68,12 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 		if (argument) {
 			argument = getCleanEventName(argument) ?? argument;
 			if (!matchingCommand.argument.choices.includes(argument)) {
-				replyWithMessage(commandToReply, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
+				replyWithSimpleMessage(commandToReply, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
 				return;
 			}
 		} else {
 			if (matchingCommand.argument.required) {
-				replyWithMessage(commandToReply, `:x: Erreur : Option "${matchingCommand.argument.name}" manquante. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
+				replyWithSimpleMessage(commandToReply, `:x: Erreur : Option "${matchingCommand.argument.name}" manquante. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
 				return;
 			}
 			argument = matchingCommand.argument.choices[0]; // default choice
