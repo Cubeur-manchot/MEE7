@@ -15,7 +15,7 @@ const replyMessage = (initialMessage, textContent, embeds, components) => {
 			repliedUser: false
 		}
 	})
-	.catch(replyErrorMessage => errorLog(`Fail to answer with message : ${replyErrorMessage}`));
+	.catch(replyMessageError => errorLog(`Fail to answer with message : ${replyMessageError}`));
 };
 
 const updateInteractionMessage = (interaction, answer) => {
