@@ -6,7 +6,7 @@ import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
 import {cleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
-import {events, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
+import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
@@ -38,7 +38,7 @@ const commands = [
 			name: "cube",
 			description: "Choix du cube",
 			required: false,
-			choices: events
+			choices: bestCubesEvents
 		},
 		method: getBestCubes,
 		stringSelectCustomId: bestCubesStringSelectCustomId

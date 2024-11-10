@@ -71,4 +71,4 @@ const getBestCubes = async eventName => {
 	};
 };
 
-export {bestCubesEvents as events, bestCubesStringSelectCustomId, getBestCubes};
+export {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes};
