@@ -3,7 +3,7 @@
 import {commands, prefix} from "./eventHandler.js";
 import {createEmbed} from "./embedBuilder.js";
 
-const getHelp = () => Promise.resolve({
+const getHelp = () => ({
 	embeds: [
 		createEmbed(
 			"Aide",

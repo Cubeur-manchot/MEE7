@@ -2,7 +2,7 @@
 
 import {createEmbed} from "./embedBuilder.js";
 
-const getPong = () => Promise.resolve({
+const getPong = () => ({
 	embeds: [
 		createEmbed(
 			"Ping",

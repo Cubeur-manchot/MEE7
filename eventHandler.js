@@ -59,7 +59,7 @@ const onReady = discordClient => {
 	deploySlashCommands(discordClient);
 };
 
-const treatCommand = (commandToReply, commandName, argument) => {
+const treatCommand = async (commandToReply, commandName, argument) => {
 	let matchingCommand = commands.find(command => command.name === commandName);
 	if (!matchingCommand) {
 		return;
@@ -79,8 +79,8 @@ const treatCommand = (commandToReply, commandName, argument) => {
 			argument = matchingCommand.argument.choices[0]; // default choice
 		}
 	}
-	matchingCommand.method(argument)
-	.then(answer => replyWithEmbedAndComponents(commandToReply, answer));
+	let answer = await matchingCommand.method(argument);
+	replyWithEmbedAndComponents(commandToReply, answer);
 };
 
 const onMessage = message => {
@@ -99,7 +99,7 @@ const isMee7CommandMessage = message => {
 		&& !message.author.bot;
 };
 
-const onInteraction = interaction => {
+const onInteraction = async interaction => {
 	if (interaction.isMessageComponent()) {
 		if (!isMee7Message(interaction.message)) {
 			return;
@@ -108,11 +108,9 @@ const onInteraction = interaction => {
 		if (!matchingCommand) {
 			return;
 		}
-		matchingCommand.method(interaction.values[0])
-		.then(answer =>
-			interaction.update(answer)
-			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`))
-		);
+		let answer = await matchingCommand.method(interaction.values[0]);
+		interaction.update(answer)
+			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
 	} else if (interaction.isChatInputCommand()) {
 		if (!isInteractionForMee7Application(interaction)) {
 			return;
