@@ -2,14 +2,14 @@
 
 import Discord from "discord.js";
 
-import {replyWithSimpleMessage, replyWithEmbedAndComponents} from "./messages.js";
+import {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
 import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
-import {errorLog, infoLog} from "./logger.js";
+import {infoLog} from "./logger.js";
 
 const prefix = process.env.PREFIX;
 
@@ -109,8 +109,7 @@ const onInteraction = async interaction => {
 			return;
 		}
 		let answer = await matchingCommand.method(interaction.values[0]);
-		interaction.update(answer)
-			.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
+		updateInteractionMessage(interaction, answer);
 	} else if (interaction.isChatInputCommand()) {
 		if (!isInteractionForMee7Application(interaction)) {
 			return;

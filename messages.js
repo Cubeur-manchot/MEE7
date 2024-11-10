@@ -18,4 +18,13 @@ const replyMessage = (initialMessage, textContent, embeds, components) => {
 	.catch(replyErrorMessage => errorLog(`Fail to answer with message : ${replyErrorMessage}`));
 };
 
-export {replyWithSimpleMessage, replyWithEmbedAndComponents};
+const updateInteractionMessage = (interaction, answer) => {
+	interaction.update({
+		content: answer.textContent,
+		embeds: answer.embeds,
+		components: answer.components
+	})
+	.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
+};
+
+export {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage};
