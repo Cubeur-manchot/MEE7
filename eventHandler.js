@@ -11,7 +11,7 @@ import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
 import {errorLog, infoLog} from "./logger.js";
 
-const prefix = "!";
+const prefix = process.env.PREFIX;
 
 const commands = [
 	{
