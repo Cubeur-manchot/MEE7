@@ -17,7 +17,7 @@ const eventEmoji = {
 	"Non-WCA": "<:nonwca:1116831265551810651>"
 };
 
-const cleanEventName = eventName => {
+const getCleanEventName = eventName => {
 	let eventNameLowerCase = eventName.toLowerCase();
 	if (
 		["2", "3", "4", "5", "6", "7"]
@@ -47,4 +47,4 @@ const cleanEventName = eventName => {
 	};
 };
 
-export {eventEmoji, cleanEventName};
+export {eventEmoji, getCleanEventName};

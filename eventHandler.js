@@ -4,7 +4,7 @@ import Discord from "discord.js";
 
 import {replyWithMessage, replyWithEmbedAndComponents} from "./messages.js";
 import {deploySlashCommands} from "./slashCommands.js";
-import {cleanEventName} from "./events.js";
+import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {getPong} from "./ping.js";
@@ -66,7 +66,7 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 	}
 	if (matchingCommand.argument) {
 		if (argument) {
-			argument = cleanEventName(argument);
+			argument = getCleanEventName(argument) ?? argument;
 			if (!matchingCommand.argument.choices.includes(argument)) {
 				replyWithMessage(commandToReply, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
 				return;
