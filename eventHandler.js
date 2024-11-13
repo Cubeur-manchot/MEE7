@@ -86,6 +86,11 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 			}
 			argument = matchingCommand.argument.choices[0]; // default choice
 		}
+	} else {
+		if (argument) {
+			replyWithSimpleMessage(commandToReply, `:x: Erreur : La commande "${matchingCommand.name}" n'attend pas d'option.`);
+			return;
+		}
 	}
 	let answer = await matchingCommand.method(argument, commandToReply);
 	replyWithEmbedAndComponents(commandToReply, answer);
