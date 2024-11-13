@@ -23,6 +23,13 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 			channelScheduled // scheduled command, no message
 			?? message.channel; // command by a user in a channel
 		let algset = (await loadJsonData(algOfTheDayFileId))[channel.id];
+		if (!algset) {
+			return {
+				embeds: null,
+				components: null,
+				textContent: `:x: Erreur : Salon "${channel.name}" invalide.`
+			};
+		}
 		let caseOfTheDay = algset.cases[Math.floor(new Date() / (24*60*60*1000)) % algset.cases.length];
 		return {
 			embeds: null,
