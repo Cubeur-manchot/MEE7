@@ -22,7 +22,7 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 		let channel =
 			channelScheduled // scheduled command, no message
 			?? message.channel; // command by a user in a channel
-		let algset = (await loadJsonData(algOfTheDayFileId)).data[channel.id];
+		let algset = (await loadJsonData(algOfTheDayFileId))[channel.id];
 		let caseOfTheDay = algset.cases[Math.floor(new Date() / (24*60*60*1000)) % algset.cases.length];
 		return {
 			embeds: null,

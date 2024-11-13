@@ -1,6 +1,6 @@
 "use strict";
 
-import {loadData} from "./data.js";
+import {loadTableData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {eventEmoji} from "./events.js";
@@ -13,7 +13,7 @@ const bestCubesSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
 const bestCubesStringSelectCustomId = "bestCubesStringSelectCustomId";
 
 const getBestCubes = async eventName => {
-	let data = await loadData(bestCubesSheetId, "Meilleurs cubes");
+	let data = await loadTableData(bestCubesSheetId, "Meilleurs cubes");
 	data.shift(); // remove header line
 	let parsedData = data
 		.map(dataRaw => {
