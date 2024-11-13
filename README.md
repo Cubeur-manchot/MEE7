@@ -35,6 +35,13 @@ Displays the best hardwares of the given puzzle argument (default is 3x3), accor
 
 Affiche les meilleurs hardwares du puzzle donné en argument (3x3 par défaut), d'après [la Google Sheet des meilleurs cubes](https://docs.google.com/spreadsheets/d/1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88/edit?usp=sharing).
 
+### Alg of the day : `!algoftheday`
+``!algoftheday``
+
+Gives the alg of the day, for the set corresponding to the channel. This command is automatically triggered everyday.
+
+Donne l'algo du jour, pour le set correspondant au salon. Cette commande est déclenchée automatiquement tous les jours.
+
 ### Ping : `!ping`
 ``!ping``
 
@@ -45,4 +52,3 @@ Répond avec pong. Permet de vérifier que le bot est connecté.
 ## Bot's developer / Développeur du bot
 
 Cubeur-manchot (Discord : @cubeurmanchot / Cubeur-manchot#7706)
-
