@@ -27,4 +27,13 @@ const updateInteractionMessage = (interaction, answer) => {
 	.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
 };
 
-export {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage};
+const sendMessageToChannel = (message, channel) => {
+	channel.send({
+		content: message.textContent,
+		embeds: message.embeds,
+		components: message.components
+	})
+	.catch(sendMessageError => errorLog(`Fail to send message : ${sendMessageError}`));
+};
+
+export {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage, sendMessageToChannel};

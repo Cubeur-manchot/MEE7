@@ -7,6 +7,7 @@ import {deploySlashCommands} from "./slashCommands.js";
 import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
+import {algOfTheDayStringSelectCustomId, getAlgOfTheDay, scheduleNextAlgOfTheDay} from "./algOfTheDay.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
 import {infoLog} from "./logger.js";
@@ -44,6 +45,12 @@ const commands = [
 		stringSelectCustomId: bestCubesStringSelectCustomId
 	},
 	{
+		name: "algoftheday",
+		description: "Donne l'algo du jour, par set.",
+		method: getAlgOfTheDay,
+		stringSelectCustomId: algOfTheDayStringSelectCustomId
+	},
+	{
 		name: "ping",
 		description: "Répond avec pong. Permet de voir si le bot est bien connecté.",
 		method: getPong
@@ -57,6 +64,7 @@ const onReady = discordClient => {
 	});
 	infoLog("MEE7 is ready !");
 	deploySlashCommands(discordClient);
+	scheduleNextAlgOfTheDay(discordClient);
 };
 
 const treatCommand = async (commandToReply, commandName, argument) => {
@@ -79,7 +87,7 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 			argument = matchingCommand.argument.choices[0]; // default choice
 		}
 	}
-	let answer = await matchingCommand.method(argument);
+	let answer = await matchingCommand.method(argument, commandToReply);
 	replyWithEmbedAndComponents(commandToReply, answer);
 };
 
@@ -108,7 +116,7 @@ const onInteraction = async interaction => {
 		if (!matchingCommand) {
 			return;
 		}
-		let answer = await matchingCommand.method(interaction.values[0]);
+		let answer = await matchingCommand.method(interaction.values[0], interaction.message);
 		updateInteractionMessage(interaction, answer);
 	} else if (interaction.isChatInputCommand()) {
 		if (!isInteractionForMee7Application(interaction)) {
