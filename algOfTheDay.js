@@ -65,7 +65,7 @@ const scheduleNextAlgOfTheDay = discordClient => {
 };
 
 const triggerAlgOfTheDay = async discordClient => {
-	let channelIds = Object.keys((await loadJsonData(algOfTheDayFileId)).data);
+	let channelIds = Object.keys((await loadJsonData(algOfTheDayFileId)));
 	for (let channelId of channelIds) {
 		let channel = await fetchChannel(discordClient, channelId);
 		if (!channel) {
