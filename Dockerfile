@@ -1,7 +1,9 @@
 FROM node:18-alpine
 
 ENV NODE_ENV production
-ENV TZ UTC
+
+RUN apk add --no-cache tzdata
+ENV TZ Europe/Paris
 
 COPY package.json .
 
