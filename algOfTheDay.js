@@ -30,11 +30,15 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 				textContent: `:x: Erreur : Salon "${channel.name}" invalide.`
 			};
 		}
-		let caseOfTheDay = algset.cases[Math.floor(new Date() / (24*60*60*1000)) % algset.cases.length];
+		let caseCount = algset.cases.length;
+		let caseIndex = Math.floor(new Date() / (24*60*60*1000)) % caseCount;
+		let caseOfTheDay = algset.cases[caseIndex];
+		let defaultAlgorithm = caseOfTheDay.algorithms[0].algorithm;
+		let eventOption = algset.event.startsWith("3") ? "" : ` -${algset.event[0]}`;
 		return {
 			embeds: null,
 			components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(algorithm => algorithm.algorithm)),
-			textContent: `$alg ${caseOfTheDay.algorithms[0].algorithm} -${algset.name}${algset.event.startsWith("3") ? "" : ` -${algset.event[0]}`} // ${algset.name} du jour : ${caseOfTheDay.name}`
+			textContent: `$alg ${defaultAlgorithm} -${algset.name}${eventOption} // ${algset.name} du jour (${caseIndex}/${caseCount}) : ${caseOfTheDay.name}`
 		};
 	}
 };
