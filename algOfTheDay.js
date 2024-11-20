@@ -33,16 +33,20 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 		let caseCount = algset.cases.length;
 		let caseIndex = Math.floor(new Date() / (24*60*60*1000)) % caseCount;
 		let caseOfTheDay = algset.cases[caseIndex];
-		let defaultAlgorithm = caseOfTheDay.algorithms[0].algorithm;
+		let defaultAlgorithm = getAlg(caseOfTheDay.algorithms[0]);
 		let eventOption = algset.event.startsWith("3") ? "" : ` -${algset.event[0]}`;
 		return {
 			embeds: null,
-			components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(algorithm => algorithm.algorithm)),
+			components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(getAlg)),
 			textContent: `$alg ${defaultAlgorithm} -${algset.name}${eventOption} // ${algset.name} du jour (${caseIndex}/${caseCount}) : ${caseOfTheDay.name}`
 		};
 	}
 };
 
+const getAlg = alg =>
+	alg.algorithm // return .algorithm if object
+	?? alg; // otherwise assume it is just a string
+ 
 const buildAlgOfTheDayComponents = (algorithms, selectedAlgorithm) => {
 	let selectOptions = algorithms
 		.slice(0, 10) // maximum 10 options
