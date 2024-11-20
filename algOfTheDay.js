@@ -38,7 +38,7 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 		return {
 			embeds: null,
 			components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(getAlg)),
-			textContent: `$alg ${defaultAlgorithm} -${algset.name}${eventOption} // ${algset.name} du jour (${caseIndex}/${caseCount}) : ${caseOfTheDay.name}`
+			textContent: `$alg ${defaultAlgorithm} -${algset.mask ?? algset.name}${eventOption} // ${algset.name} du jour (${caseIndex}/${caseCount}) : ${caseOfTheDay.name}`
 		};
 	}
 };
