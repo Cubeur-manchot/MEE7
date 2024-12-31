@@ -3,7 +3,7 @@
 import {loadJsonData} from "./data.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {sendMessageToChannel} from "./messages.js";
-import {errorLog} from "./logger.js";
+import {errorLog, debugLog} from "./logger.js";
 
 const algOfTheDayFileId = "1RUYN-sqngHdW_SEVG3_BfUoj_M2kKaam";
 
@@ -31,7 +31,18 @@ const getAlgOfTheDay = async (alg, message, channelScheduled) => {
 			};
 		}
 		let caseCount = algset.cases.length;
-		let caseIndex = Math.floor(new Date() / (24*60*60*1000)) % caseCount;
+		// local dates
+		let now = new Date();
+		let epoch = new Date("1970-01-01 00:00:00");
+		let daysCount = Math.floor((now - epoch) / (24*60*60*1000));
+		let caseIndex = daysCount % caseCount;
+		if (process.env.DEBUG_LOGS === "true") {
+			debugLog(
+				`Now = ${now}.`
+				+ `\nDays count = ${daysCount}.`
+				+ `\nCase index (from 0 to n-1) = ${caseIndex}.`
+			);
+		}
 		let caseOfTheDay = algset.cases[caseIndex];
 		let defaultAlgorithm = getAlg(caseOfTheDay.algorithms[0]);
 		let eventOption = algset.event.startsWith("3") ? "" : ` -${algset.event[0]}`;
