@@ -1,16 +1,11 @@
 "use strict";
 
-const infoLog = infoMessage => {
-	console.log(`${getDate()}[Info] ${infoMessage}`);
-};
+const log = (logType, message) => console[logType.toLowerCase()](`${getDate()}[${logType}] ${message}`);
 
-const warningLog = infoMessage => {
-	console.log(`${getDate()}[Warning] ${infoMessage}`);
-};
-
-const errorLog = errorMessage => {
-	console.error(`${getDate()}[Error] ${errorMessage}`);
-};
+const infoLog = message => log("Info", message);
+const warningLog = message => log("Warn", message);
+const errorLog = message => log("Error", message);
+const debugLog = message => log("Debug", message);
 
 const getDate = () => {
 	let date = new Date();
@@ -20,4 +15,4 @@ const getDate = () => {
 
 const getStringTwoDigits = value => `${value < 10 ? "0" : ""}${value}`;
 
-export {infoLog, warningLog, errorLog};
+export {infoLog, warningLog, errorLog, debugLog};
