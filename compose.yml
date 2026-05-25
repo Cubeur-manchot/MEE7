@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   mee7:
     container_name: mee7
-    restart: always
+    restart: unless-stopped
     image: ghcr.io/cubeur-manchot/mee7:latest
     env_file: .env
