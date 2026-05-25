@@ -3,3 +3,5 @@ services:
     container_name: mee7-dev
     build: .
     stop_grace_period: 3s
+    environment:
+      - PREFIX=²

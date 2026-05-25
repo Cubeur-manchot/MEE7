@@ -4,3 +4,5 @@ services:
     restart: unless-stopped
     image: ghcr.io/cubeur-manchot/mee7:latest
     env_file: .env
+    environment:
+      - PREFIX=!
