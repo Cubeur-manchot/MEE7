@@ -11,18 +11,18 @@ const deploySlashCommands = discordClient => {
 		.then(currentCommands => {
 			if (areCommandsSetsEqual(currentCommands, slashCommands)) {
 				infoLog(
-					"Mee7's commands are up to date, no need to redeploy them."
+					"MEE7's commands are up to date, no need to redeploy them."
 				);
 			} else {
 				infoLog(
-					"Mee7's commands are not up to date, and should be redeployed."
+					"MEE7's commands are not up to date, and should be redeployed."
 				);
 				deployCommands(discordClient, slashCommands);
 			}
 		})
 		.catch(applicationCommandsGetError => {
 			warningLog(
-				`Fail to get Mee7's application commands :${applicationCommandsGetError}.`
+				`Fail to get MEE7's application commands :${applicationCommandsGetError}.`
 			);
 			deployCommands(discordClient, slashCommands);
 		});
@@ -104,10 +104,10 @@ const areCommandsSetsEqual = (currentCommands, newCommands) => {
 const deployCommands = (discordClient, slashCommands) => {
 	discordClient.rest.put(Discord.Routes.applicationCommands(discordClient.application.id), {body: slashCommands.map(slashCommand => slashCommand.toJSON())})
 		.then(() => infoLog(
-			"Mee7's commands have been deployed !"
+			"MEE7's commands have been deployed !"
 		))
 		.catch(applicationCommandsPutError => errorLog(
-			`Fail to deploy Mee7's application commands : "${applicationCommandsPutError}".`
+			`Fail to deploy MEE7's application commands : "${applicationCommandsPutError}".`
 		));
 };
 
