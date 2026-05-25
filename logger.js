@@ -1,18 +1,14 @@
 "use strict";
 
-const log = (logType, message) => console[logType.toLowerCase()](`${getDate()}[${logType}] ${message}`);
+const log = (logLevel, message) => console[logLevel](JSON.stringify({
+	timestamp: new Date().toISOString(),
+	level: logLevel,
+	message
+}));
 
-const infoLog = message => log("Info", message);
-const warningLog = message => log("Warn", message);
-const errorLog = message => log("Error", message);
-const debugLog = message => log("Debug", message);
-
-const getDate = () => {
-	let date = new Date();
-	return `[${date.getFullYear()}-${getStringTwoDigits(date.getMonth() + 1)}-${getStringTwoDigits(date.getDate())} `
-		+ `${getStringTwoDigits(date.getHours())}:${getStringTwoDigits(date.getMinutes())}:${getStringTwoDigits(date.getSeconds())}]`;
-};
-
-const getStringTwoDigits = value => `${value < 10 ? "0" : ""}${value}`;
+const infoLog = message => log("info", message);
+const warningLog = message => log("warn", message);
+const errorLog = message => log("error", message);
+const debugLog = message => log("debug", message);
 
 export {infoLog, warningLog, errorLog, debugLog};
