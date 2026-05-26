@@ -5,7 +5,7 @@ import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {eventEmoji} from "./events.js";
 
-const pbListEvents = process.env.EVENTS.split(",");
+const pbListEvents = process.env.PBLIST_EVENTS.split(",");
 
 const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
 

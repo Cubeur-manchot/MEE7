@@ -6,3 +6,4 @@ services:
     env_file: .env
     environment:
       - PREFIX=!
+      - PBLIST_EVENTS=3x3,4x4,5x5,3BLD,OH,Megaminx,Clock,Pyraminx
