@@ -8,7 +8,7 @@ import {eventEmoji} from "./events.js";
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];
 const bestCubesEvents = [...wcaEvents, "Non-WCA"];
 
-const bestCubesSheetId = "1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88";
+const bestCubesSheetId = process.env.BESTCUBES_SPREADSHEET_ID;
 
 const bestCubesStringSelectCustomId = "bestCubesStringSelectCustomId";
 

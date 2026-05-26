@@ -5,7 +5,7 @@ import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {sendMessageToChannel} from "./messages.js";
 import {errorLog} from "./logger.js";
 
-const algOfTheDayFileId = "1RUYN-sqngHdW_SEVG3_BfUoj_M2kKaam";
+const algOfTheDayFileId = process.env.ALGOFTHEDAY_FILE_ID;
 
 const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 

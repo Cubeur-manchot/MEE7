@@ -7,7 +7,7 @@ import {eventEmoji} from "./events.js";
 
 const pbListEvents = process.env.PBLIST_EVENTS.split(",");
 
-const pbListSheetId = "14RKLrMwBD3VPjZfXhTy4hiMnq3_skEV8Jus7lctjtN0";
+const pbListSheetId = process.env.PBLIST_SPREADSHEET_ID;
 
 const pbListStringSelectCustomId = "pbListStringSelectCustomId";
 
