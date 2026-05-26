@@ -15,7 +15,6 @@ const getPbList = async eventName => {
 	let data = await loadTableData(pbListSheetId, "Liste des PB");
 	let timeColumnNumber = data[0].findIndex(headerLabel => headerLabel === eventName);
 	let pbList = parseData(data, timeColumnNumber);
-	pbList = removeDuplicates(pbList);
 	pbList = orderByTimeAscending(pbList);
 	pbList = filterTop100(pbList);
 	let embedFields = createEmbedFields(pbList);
@@ -73,18 +72,6 @@ const parseDurationSeconds = duration => {
 				.map((element, index) => element * Math.pow(60, index))
 				.reduce((partialSum, currentPartialTimeSeconds) => partialSum + currentPartialTimeSeconds, 0);
 	};
-};
-
-const removeDuplicates = pbList => { // todo : uncomment second unicity filter when all members have Discord unique identifier
-	let uniqueIds = pbList
-		.map(pbListElement => pbListElement.member.id)
-		.filter((id, _, idArray) => idArray.indexOf(id) === idArray.lastIndexOf(id));
-	/*let uniqueDiscordIdentifiers = pbList
-		.map(pbListElement => pbListElement.member.discordIdentifier)
-		.filter((memberDiscordIdentifier, _, discordIdentifierArray) => discordIdentifierArray.indexOf(memberDiscordIdentifier) === discordIdentifierArray.lastIndexOf(memberDiscordIdentifier));*/
-	return pbList
-		.filter(pbListElement => uniqueIds.includes(pbListElement.member.id))
-		//.filter(pbListElement => uniqueDiscordIdentifiers.includes(pbListElement.member.discordIdentifier));
 };
 
 const orderByTimeAscending = pbList =>
