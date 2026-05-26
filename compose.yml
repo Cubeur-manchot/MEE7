@@ -3,9 +3,9 @@ services:
     container_name: mee7
     restart: unless-stopped
     image: ghcr.io/cubeur-manchot/mee7:latest
-    env_file: .env
     environment:
       - PREFIX=!
+      - TOKEN=${TOKEN}
       - ALGOFTHEDAY_FILE_ID=1RUYN-sqngHdW_SEVG3_BfUoj_M2kKaam
       - BESTCUBES_SPREADSHEET_ID=1UzGN5xEl-noA3JsEFC6HJL1TL9x7TuKGiDYa64WEd88
       - PBLIST_EVENTS=3x3,4x4,5x5,3BLD,OH,Megaminx,Clock,Pyraminx

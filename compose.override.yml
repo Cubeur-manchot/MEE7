@@ -5,6 +5,7 @@ services:
     stop_grace_period: 3s
     volumes:
       - ./secrets/googleApi_serviceAccountKey.json:/run/secrets/googleApi_serviceAccountKey.json:ro
+    env_file: .env
     environment:
       - PREFIX=²
       - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/googleApi_serviceAccountKey.json
