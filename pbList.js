@@ -3,7 +3,7 @@
 import {loadTableData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
-import {eventEmoji} from "./events.js";
+import {getEventEmoji} from "./events.js";
 
 const pbListEvents = process.env.PBLIST_EVENTS.split(",");
 
@@ -23,7 +23,7 @@ const getPbList = async eventName => {
 		.map(eventName => {
 			return {
 				label: eventName,
-				emoji: eventEmoji[eventName],
+				emoji: getEventEmoji(eventName),
 				value: eventName
 			};
 		});

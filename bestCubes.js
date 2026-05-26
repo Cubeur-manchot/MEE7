@@ -3,7 +3,7 @@
 import {loadTableData} from "./data.js";
 import {createEmbed} from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
-import {eventEmoji} from "./events.js";
+import {getEventEmoji} from "./events.js";
 
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];
 const bestCubesEvents = [...wcaEvents, "Non-WCA"];
@@ -24,7 +24,7 @@ const getBestCubes = async eventName => {
 					model: model,
 					price: parseFloat(price.replace(/,/g, ".")),
 					information: information,
-					emoji: eventEmoji[eventName]
+					emoji: getEventEmoji(eventName)
 				}
 				: null;
 		})
@@ -56,7 +56,7 @@ const getBestCubes = async eventName => {
 		.map(eventName => {
 			return {
 				label: eventName,
-				emoji: eventEmoji[eventName],
+				emoji: getEventEmoji(eventName),
 				value: eventName
 			};
 		});
