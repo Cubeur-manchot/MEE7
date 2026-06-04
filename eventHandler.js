@@ -114,9 +114,6 @@ const isMee7CommandMessage = message => {
 
 const onInteraction = async interaction => {
 	if (interaction.isMessageComponent()) {
-		if (!isMee7Message(interaction.message)) {
-			return;
-		}
 		let matchingCommand = commands.find(command => command.stringSelectCustomId === interaction.customId);
 		if (!matchingCommand) {
 			return;
@@ -124,9 +121,6 @@ const onInteraction = async interaction => {
 		let answer = await matchingCommand.method(interaction.values[0], interaction.message);
 		updateInteractionMessage(interaction, answer);
 	} else if (interaction.isChatInputCommand()) {
-		if (!isInteractionForMee7Application(interaction)) {
-			return;
-		}
 		let commandName = interaction.commandName;
 		let argument = commands
 			.filter(command => command.argument)
@@ -137,14 +131,6 @@ const onInteraction = async interaction => {
 			?.value;
 		treatCommand(interaction, commandName, argument);
 	}
-};
-
-const isMee7Message = message => {
-	return message.author.id === message.client.user.id;
-};
-
-const isInteractionForMee7Application = interaction => {
-	return interaction.applicationId === interaction.client.application.id;
 };
 
 export {commands, prefix, onReady, onMessage, onInteraction};
