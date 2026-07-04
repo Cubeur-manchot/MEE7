@@ -1,16 +1,12 @@
 "use strict";
 
-import Discord from "discord.js";
-
 import {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
-import {deploySlashCommands} from "./slashCommands.js";
 import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
-import {algOfTheDayStringSelectCustomId, getAlgOfTheDay, scheduleNextAlgOfTheDay} from "./algOfTheDay.js";
+import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
-import logger from "./logger.js";
 
 const prefix = process.env.PREFIX;
 
@@ -57,16 +53,6 @@ const commands = [
 		method: getPong
 	}
 ];
-
-const onReady = discordClient => {
-	discordClient.user.setPresence({
-		activities: [{name: "filer un coup de main à MEE6", type: Discord.ActivityType.Playing}],
-		status: "online",
-	});
-	logger.info("MEE7 is ready !");
-	deploySlashCommands(discordClient, commands);
-	scheduleNextAlgOfTheDay(discordClient);
-};
 
 const treatCommand = async (commandToReply, commandName, argument) => {
 	let matchingCommand = commands.find(command => command.name === commandName);
@@ -134,4 +120,4 @@ const onInteraction = async interaction => {
 	}
 };
 
-export {commands, prefix, onReady, onMessage, onInteraction};
+export {commands, prefix, onMessage, onInteraction};

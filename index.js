@@ -2,7 +2,8 @@
 
 import Discord from "discord.js";
 
-import {onReady, onMessage, onInteraction} from "./eventHandler.js";
+import {onMessage, onInteraction} from "./eventHandler.js";
+import onReady from "./onReady.js";
 import logger from "./logger.js";
 
 const Mee7 = new Discord.Client({
