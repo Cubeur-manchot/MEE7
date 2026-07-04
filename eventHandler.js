@@ -23,7 +23,7 @@ const commands = [
 	},
 	{
 		name: "pblist",
-		description: "Affiche la liste des PB single des membres du serveur, par event.",
+		description: "Affiche la liste des PB single des membres du serveur pour un event donné.",
 		argument: {
 			name: "event",
 			description: "Choix de l'event",
