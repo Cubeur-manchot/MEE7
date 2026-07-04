@@ -18,6 +18,9 @@ Mee7.once(Discord.Events.ClientReady, onReady);
 Mee7.on(Discord.Events.MessageCreate, onMessage);
 Mee7.on(Discord.Events.InteractionCreate, onInteraction);
 
-Mee7.login(process.env.TOKEN)
-	.then(() => logger.info("MEE7 is logged in !"))
-	.catch(failedLoginErrorMessage => logger.error(`MEE7 failed to login : ${failedLoginErrorMessage}`));
+try {
+	await Mee7.login(process.env.TOKEN);
+	logger.info("MEE7 is logged in !");
+} catch (failedLoginErrorMessage) {
+	logger.error(`MEE7 failed to login : ${failedLoginErrorMessage.stack}`);
+}
