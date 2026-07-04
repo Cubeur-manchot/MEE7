@@ -3,25 +3,25 @@
 import Discord from "discord.js";
 
 import {commands} from "./eventHandler.js";
-import {errorLog, warningLog, infoLog} from "./logger.js";
+import logger from "./logger.js";
 
 const deploySlashCommands = discordClient => {
 	let slashCommands = buildSlashCommands();
 	discordClient.rest.get(Discord.Routes.applicationCommands(discordClient.application.id))
 		.then(currentCommands => {
 			if (areCommandsSetsEqual(currentCommands, slashCommands)) {
-				infoLog(
+				logger.info(
 					"MEE7's commands are up to date, no need to redeploy them."
 				);
 			} else {
-				infoLog(
+				logger.info(
 					"MEE7's commands are not up to date, and should be redeployed."
 				);
 				deployCommands(discordClient, slashCommands);
 			}
 		})
 		.catch(applicationCommandsGetError => {
-			warningLog(
+			logger.warn(
 				`Fail to get MEE7's application commands :${applicationCommandsGetError}.`
 			);
 			deployCommands(discordClient, slashCommands);
@@ -103,10 +103,10 @@ const areCommandsSetsEqual = (currentCommands, newCommands) => {
 
 const deployCommands = (discordClient, slashCommands) => {
 	discordClient.rest.put(Discord.Routes.applicationCommands(discordClient.application.id), {body: slashCommands.map(slashCommand => slashCommand.toJSON())})
-		.then(() => infoLog(
+		.then(() => logger.info(
 			"MEE7's commands have been deployed !"
 		))
-		.catch(applicationCommandsPutError => errorLog(
+		.catch(applicationCommandsPutError => logger.error(
 			`Fail to deploy MEE7's application commands : "${applicationCommandsPutError}".`
 		));
 };

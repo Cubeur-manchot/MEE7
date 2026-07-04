@@ -1,14 +1,18 @@
 "use strict";
 
-const log = (logLevel, message) => console[logLevel](JSON.stringify({
-	timestamp: new Date().toISOString(),
-	level: logLevel,
-	message
-}));
+class Logger {
+	constructor() {
+		this.info("Logger is ready.");
+	};
+	info = message => this.#log("info", message);
+	warn = message => this.#log("warn", message);
+	error = message => this.#log("error", message);
+	debug = message => this.#log("debug", message);
+	#log = (logLevel, message) => console[logLevel](JSON.stringify({
+		timestamp: new Date().toISOString(),
+		level: logLevel,
+		message
+	}));
+};
 
-const infoLog = message => log("info", message);
-const warningLog = message => log("warn", message);
-const errorLog = message => log("error", message);
-const debugLog = message => log("debug", message);
-
-export {infoLog, warningLog, errorLog, debugLog};
+export default new Logger();

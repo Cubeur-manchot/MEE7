@@ -10,7 +10,7 @@ import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./be
 import {algOfTheDayStringSelectCustomId, getAlgOfTheDay, scheduleNextAlgOfTheDay} from "./algOfTheDay.js";
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
-import {infoLog} from "./logger.js";
+import logger from "./logger.js";
 
 const prefix = process.env.PREFIX;
 
@@ -18,6 +18,7 @@ const commands = [
 	{
 		name: "help",
 		description: "Affiche cette aide.",
+		context: "slash",
 		method: getHelp
 	},
 	{
@@ -62,8 +63,8 @@ const onReady = discordClient => {
 		activities: [{name: "filer un coup de main à MEE6", type: Discord.ActivityType.Playing}],
 		status: "online",
 	});
-	infoLog("MEE7 is ready !");
-	deploySlashCommands(discordClient);
+	logger.info("MEE7 is ready !");
+	deploySlashCommands(discordClient, commands);
 	scheduleNextAlgOfTheDay(discordClient);
 };
 

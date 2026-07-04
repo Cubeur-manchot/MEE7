@@ -1,6 +1,6 @@
 "use strict";
 
-import {errorLog} from "./logger.js";
+import logger from "./logger.js";
 
 const replyWithSimpleMessage = (initialMessage, answerMessage) => replyMessage(initialMessage, answerMessage, null, null);
 
@@ -15,7 +15,7 @@ const replyMessage = (initialMessage, textContent, embeds, components) => {
 			repliedUser: false
 		}
 	})
-	.catch(replyMessageError => errorLog(`Fail to answer with message : ${replyMessageError}`));
+	.catch(replyMessageError => logger.error(`Fail to answer with message : ${replyMessageError}`));
 };
 
 const updateInteractionMessage = (interaction, answer) => {
@@ -24,7 +24,7 @@ const updateInteractionMessage = (interaction, answer) => {
 		embeds: answer.embeds,
 		components: answer.components
 	})
-	.catch(interactionUpdateError => errorLog(`Fail to update message after string select interaction : ${interactionUpdateError}`));
+	.catch(interactionUpdateError => logger.error(`Fail to update message after string select interaction : ${interactionUpdateError}`));
 };
 
 const sendMessageToChannel = (message, channel) => {
@@ -33,7 +33,7 @@ const sendMessageToChannel = (message, channel) => {
 		embeds: message.embeds,
 		components: message.components
 	})
-	.catch(sendMessageError => errorLog(`Fail to send message : ${sendMessageError}`));
+	.catch(sendMessageError => logger.error(`Fail to send message : ${sendMessageError}`));
 };
 
 export {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage, sendMessageToChannel};

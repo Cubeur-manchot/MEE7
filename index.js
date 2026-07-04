@@ -3,7 +3,7 @@
 import Discord from "discord.js";
 
 import {onReady, onMessage, onInteraction} from "./eventHandler.js";
-import {infoLog, errorLog} from "./logger.js";
+import logger from "./logger.js";
 
 const Mee7 = new Discord.Client({
 	intents: [
@@ -19,5 +19,5 @@ Mee7.on(Discord.Events.MessageCreate, onMessage);
 Mee7.on(Discord.Events.InteractionCreate, onInteraction);
 
 Mee7.login(process.env.TOKEN)
-	.then(() => infoLog("MEE7 is logged in !"))
-	.catch(failedLoginErrorMessage => errorLog(`MEE7 failed to login : ${failedLoginErrorMessage}`));
+	.then(() => logger.info("MEE7 is logged in !"))
+	.catch(failedLoginErrorMessage => logger.error(`MEE7 failed to login : ${failedLoginErrorMessage}`));

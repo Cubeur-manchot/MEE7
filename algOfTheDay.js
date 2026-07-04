@@ -3,7 +3,7 @@
 import {loadJsonData} from "./data.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {sendMessageToChannel} from "./messages.js";
-import {errorLog} from "./logger.js";
+import logger from "./logger.js";
 
 const algOfTheDayFileId = process.env.ALGOFTHEDAY_FILE_ID;
 
@@ -89,6 +89,6 @@ const triggerAlgOfTheDay = async discordClient => {
 
 const fetchChannel = (discordClient, channelId) =>
 	discordClient.channels.fetch(channelId)
-		.catch(fetchChannelError => errorLog(`Fail to fetch channel with id ${channelId}: ${fetchChannelError}`));
+		.catch(fetchChannelError => logger.error(`Fail to fetch channel with id ${channelId}: ${fetchChannelError}`));
 
 export {algOfTheDayStringSelectCustomId, getAlgOfTheDay, scheduleNextAlgOfTheDay};
