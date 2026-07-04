@@ -8,8 +8,6 @@ import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js"
 import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
 
-const prefix = process.env.PREFIX;
-
 const commands = [
 	{
 		name: "help",
@@ -62,41 +60,12 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 	if (matchingCommand.argument) {
 		if (argument) {
 			argument = getCleanEventName(argument) ?? argument;
-			if (!matchingCommand.argument.choices.includes(argument)) {
-				replyWithSimpleMessage(commandToReply, `:x: Erreur : Option "${argument}" incorrecte. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
-				return;
-			}
 		} else {
-			if (matchingCommand.argument.required) {
-				replyWithSimpleMessage(commandToReply, `:x: Erreur : Option "${matchingCommand.argument.name}" manquante. Choix possibles : ${matchingCommand.argument.choices.join(", ")}.`);
-				return;
-			}
 			argument = matchingCommand.argument.choices[0]; // default choice
-		}
-	} else {
-		if (argument) {
-			replyWithSimpleMessage(commandToReply, `:x: Erreur : La commande "${matchingCommand.name}" n'attend pas d'option.`);
-			return;
 		}
 	}
 	let answer = await matchingCommand.method(argument, commandToReply);
 	replyWithEmbedAndComponents(commandToReply, answer);
-};
-
-const onMessage = message => {
-	if (!isMee7CommandMessage(message)) {
-		return;
-	}
-	let [commandName, ...restOfTheMessage] = message.content
-		.replace(new RegExp(`^${prefix}`), "")
-		.split(/\s/g)
-		.filter(word => word !== "");
-	treatCommand(message, commandName, restOfTheMessage.join(" "));
-};
-
-const isMee7CommandMessage = message => {
-	return message.content.startsWith(prefix)
-		&& !message.author.bot;
 };
 
 const onInteraction = async interaction => {
@@ -120,4 +89,4 @@ const onInteraction = async interaction => {
 	}
 };
 
-export {commands, prefix, onMessage, onInteraction};
+export {commands, onMessage, onInteraction};
