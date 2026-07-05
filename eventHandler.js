@@ -83,4 +83,4 @@ const onInteraction = async interaction => {
 	treatCommand(interaction, commandName, argument);
 };
 
-export {commands, onMessage, onInteraction};
+export {commands, onInteraction};
