@@ -1,6 +1,6 @@
 "use strict";
 
-import {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
+import {replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
 import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
