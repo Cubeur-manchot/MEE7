@@ -2,8 +2,6 @@
 
 import logger from "./logger.js";
 
-const replyWithSimpleMessage = (initialMessage, answerMessage) => replyMessage(initialMessage, answerMessage, null, null);
-
 const replyWithEmbedAndComponents = (initialMessage, answer) => replyMessage(initialMessage, answer.textContent, answer.embeds, answer.components);
 
 const replyMessage = (initialMessage, textContent, embeds, components) => {
@@ -36,4 +34,4 @@ const sendMessageToChannel = (message, channel) => {
 	.catch(sendMessageError => logger.error(`Fail to send message : ${sendMessageError}`));
 };
 
-export {replyWithSimpleMessage, replyWithEmbedAndComponents, updateInteractionMessage, sendMessageToChannel};
+export {replyWithEmbedAndComponents, updateInteractionMessage, sendMessageToChannel};
