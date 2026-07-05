@@ -5,7 +5,6 @@ import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js";
-import {getPong} from "./ping.js";
 import {getHelp} from "./help.js";
 
 const commands = [
@@ -44,11 +43,6 @@ const commands = [
 		description: "Donne l'algo du jour, par set.",
 		method: getAlgOfTheDay,
 		stringSelectCustomId: algOfTheDayStringSelectCustomId
-	},
-	{
-		name: "ping",
-		description: "Répond avec pong. Permet de voir si le bot est bien connecté.",
-		method: getPong
 	}
 ];
 
@@ -73,6 +67,9 @@ const onInteraction = async interaction => {
 		return;
 	}
 	let commandName = interaction.commandName;
+	if (["ping"].includes(commandName)) {
+		return;
+	}
 	let argument = commands
 		.filter(command => command.argument)
 		.map(command => command.argument.name)
