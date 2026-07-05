@@ -4,6 +4,7 @@ import Discord from "discord.js";
 
 import {onInteraction} from "./eventHandler.js";
 import onReady from "./onReady.js";
+import onMessageComponentInteraction from "./onMessageComponentInteraction.js";
 import logger from "./logger.js";
 
 const Mee7 = new Discord.Client({
@@ -17,6 +18,7 @@ const Mee7 = new Discord.Client({
 
 Mee7.once(Discord.Events.ClientReady, onReady);
 Mee7.on(Discord.Events.InteractionCreate, onInteraction);
+Mee7.on(Discord.Events.InteractionCreate, onMessageComponentInteraction);
 
 try {
 	await Mee7.login(process.env.TOKEN);
