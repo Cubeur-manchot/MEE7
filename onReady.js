@@ -2,7 +2,6 @@
 
 import Discord from "discord.js";
 import {scheduleNextAlgOfTheDay} from "./algOfTheDay.js";
-import {deploySlashCommands} from "./slashCommands.js";
 import logger from "./logger.js";
 
 const onReady = discordClient => {
@@ -11,7 +10,6 @@ const onReady = discordClient => {
 		status: "online",
 	});
 	logger.info("MEE7 is ready !");
-	deploySlashCommands(discordClient);
 	scheduleNextAlgOfTheDay(discordClient);
 };
 

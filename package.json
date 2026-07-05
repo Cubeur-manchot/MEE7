@@ -3,6 +3,7 @@
   "type": "module",
   "dependencies": {
     "discord.js": "^14.26.4",
-    "googleapis": "^172.0.0"
+    "googleapis": "^172.0.0",
+	"discord-commands-toolkit": "git+https://github.com/Cubeur-manchot/Discord-commands-toolkit.git"
   }
 }

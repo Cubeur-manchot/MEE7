@@ -1,6 +1,7 @@
 "use strict";
 
 import Discord from "discord.js";
+import {CommandsHandler} from "discord-commands-toolkit";
 
 import {onInteraction} from "./eventHandler.js";
 import onReady from "./onReady.js";
@@ -14,6 +15,12 @@ const Mee7 = new Discord.Client({
 		Discord.GatewayIntentBits.MessageContent
 	],
 	partials: []
+});
+
+const commandHandler = new CommandsHandler({
+	discordClient: Mee7,
+	commands: [],
+	logger
 });
 
 Mee7.once(Discord.Events.ClientReady, onReady);
