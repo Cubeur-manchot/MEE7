@@ -1,7 +1,7 @@
 "use strict";
 
 import {loadTableData} from "./data.js";
-import {createEmbed} from "./embedBuilder.js";
+import createEmbed from "./embedBuilder.js";
 import {createRowWithSelectComponents} from "./componentBuilder.js";
 import {getEventEmoji} from "./events.js";
 

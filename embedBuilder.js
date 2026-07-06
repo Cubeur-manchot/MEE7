@@ -12,4 +12,4 @@ const createEmbed = (title, titleUrl, description, fields) => {
 		.setTimestamp();
 };
 
-export {createEmbed};
+export default createEmbed;

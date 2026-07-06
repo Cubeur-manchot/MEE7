@@ -1,7 +1,7 @@
 "use strict";
 
 import {commands} from "./eventHandler.js";
-import {createEmbed} from "./embedBuilder.js";
+import createEmbed from "./embedBuilder.js";
 
 const getHelp = () => ({
 	embeds: [
