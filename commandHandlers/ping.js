@@ -4,16 +4,18 @@ import {Command} from "discord-commands-toolkit";
 
 import {createEmbed} from "../embedBuilder.js";
 
-const handlePingCommandInteraction = (interaction) => ({
-	embeds: [
-		createEmbed(
-			"Ping",
-			"https://fr.wikipedia.org/wiki/Ping_(logiciel)",
-			":ping_pong: Pong ! :ping_pong:",
-			[]
-		)
-	]
-});
+const handlePingCommandInteraction = function(interaction) {
+	return {
+		embeds: [
+			createEmbed(
+				"Ping",
+				"https://fr.wikipedia.org/wiki/Ping_(logiciel)",
+				":ping_pong: Pong ! :ping_pong:",
+				[]
+			)
+		]
+	}
+};
 
 const pingCommand = new Command({
 	name: "ping",
