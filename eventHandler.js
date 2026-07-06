@@ -5,15 +5,8 @@ import {getCleanEventName} from "./events.js";
 import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js";
-import {getHelp} from "./help.js";
 
 const commands = [
-	{
-		name: "help",
-		description: "Affiche cette aide.",
-		context: "slash",
-		method: getHelp
-	},
 	{
 		name: "pblist",
 		description: "Affiche la liste des PB single des membres du serveur pour un event donné.",

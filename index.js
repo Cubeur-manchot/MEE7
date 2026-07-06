@@ -8,6 +8,7 @@ import {onInteraction} from "./eventHandler.js";
 import onReady from "./onReady.js";
 import onMessageComponentInteraction from "./onMessageComponentInteraction.js";
 import pingCommand from "./commandHandlers/ping.js";
+import helpCommand from "./commandHandlers/help.js";
 
 const Mee7 = new Discord.Client({
 	intents: [
@@ -21,7 +22,8 @@ const Mee7 = new Discord.Client({
 const commandHandler = new CommandsHandler({
 	discordClient: Mee7,
 	commands: [
-		pingCommand
+		pingCommand,
+		helpCommand
 	],
 	logger
 });
