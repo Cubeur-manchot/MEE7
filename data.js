@@ -11,14 +11,18 @@ const auth = new google.auth.GoogleAuth({
 
 const authClient = await auth.getClient();
 
+const googleSheetsClient = google.sheets({version: "v4", auth: authClient});
+
+const googleDriveClient = google.drive({version: "v3", auth: authClient});
+
 const loadTableData = async (spreadsheetId, tabName) => 
-	(await google.sheets({version: "v4", auth: authClient}).spreadsheets.values.get({
+	(await googleSheetsClient.spreadsheets.values.get({
 		spreadsheetId: spreadsheetId,
 		range: tabName
 	})).data.values;
 
 const loadJsonData = async fileId =>
-	(await google.drive({version: "v3", auth: authClient}).files.get(
+	(await googleDriveClient.files.get(
 		{
 			fileId: fileId,
 			alt: "media"
