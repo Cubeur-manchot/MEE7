@@ -18,10 +18,14 @@ const loadTableData = async (spreadsheetId, tabName) =>
 	})).data.values;
 
 const loadJsonData = async fileId =>
-	(await google.drive({version: "v3", auth: authClient}).files.get({
-		fileId: fileId,
-		alt: "media",
-		responseType: "json" // result will be interpreted as object already parsed
-	})).data;
+	(await google.drive({version: "v3", auth: authClient}).files.get(
+		{
+			fileId: fileId,
+			alt: "media"
+		},
+		{
+			responseType: "json" // result will be interpreted as object already parsed
+		}
+	)).data;
 
 export {loadTableData, loadJsonData};
