@@ -1,7 +1,7 @@
 "use strict";
 
-import {commands} from "./eventHandler.js";
-import {updateInteractionMessage} from "./messages.js";
+import {commands} from "../eventHandler.js";
+import {updateInteractionMessage} from "../messages.js";
 
 const onMessageComponentInteraction = async interaction => {
 	if (!interaction.isMessageComponent()) {

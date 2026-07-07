@@ -5,8 +5,8 @@ import {CommandsHandler} from "discord-commands-toolkit";
 
 import logger from "./logger.js";
 import {onInteraction} from "./eventHandler.js";
-import onReady from "./onReady.js";
-import onMessageComponentInteraction from "./onMessageComponentInteraction.js";
+import onReady from "./eventHandlers/onReady.js";
+import onMessageComponentInteraction from "./eventHandlers/onMessageComponentInteraction.js";
 import pingCommand from "./commandHandlers/ping.js";
 import helpCommand from "./commandHandlers/help.js";
 
