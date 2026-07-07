@@ -60,7 +60,7 @@ const onInteraction = async interaction => {
 		return;
 	}
 	let commandName = interaction.commandName;
-	if (["ping"].includes(commandName)) {
+	if (["ping", "help"].includes(commandName)) {
 		return;
 	}
 	let argument = commands
