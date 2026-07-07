@@ -1,7 +1,7 @@
 "use strict";
 
 import {loadJsonData} from "./data.js";
-import {createRowWithSelectComponents} from "./componentBuilder.js";
+import createRowWithSelectComponents from "./discordBuilders/componentBuilder.js";
 import {sendMessageToChannel} from "./messages.js";
 import logger from "./logger.js";
 

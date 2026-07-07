@@ -1,8 +1,8 @@
 "use strict";
 
 import {loadTableData} from "./data.js";
-import createEmbed from "./embedBuilder.js";
-import {createRowWithSelectComponents} from "./componentBuilder.js";
+import createEmbed from "./discordBuilders/embedBuilder.js";
+import createRowWithSelectComponents from "./discordBuilders/componentBuilder.js";
 import {getEventEmoji} from "./events.js";
 
 const wcaEvents = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Megaminx", "Pyraminx", "Skewb", "Square one", "Clock"];

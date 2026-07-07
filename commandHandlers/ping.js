@@ -2,7 +2,7 @@
 
 import {Command} from "discord-commands-toolkit";
 
-import createEmbed from "../embedBuilder.js";
+import createEmbed from "../discordBuilders/embedBuilder.js";
 
 const handlePingCommandInteraction = function(interaction) {
 	return {

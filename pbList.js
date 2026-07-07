@@ -1,8 +1,8 @@
 "use strict";
 
 import {loadTableData} from "./data.js";
-import createEmbed from "./embedBuilder.js";
-import {createRowWithSelectComponents} from "./componentBuilder.js";
+import createEmbed from "./discordBuilders/embedBuilder.js";
+import createRowWithSelectComponents from "./discordBuilders/componentBuilder.js";
 import {getEventEmoji} from "./events.js";
 
 const pbListEvents = process.env.PBLIST_EVENTS.split(",");

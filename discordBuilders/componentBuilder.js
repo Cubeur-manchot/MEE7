@@ -13,4 +13,4 @@ const createRowWithSelectComponents = (selectOptions, selectedOption, customId) 
 	];
 };
 
-export {createRowWithSelectComponents};
+export default createRowWithSelectComponents;
