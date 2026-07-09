@@ -2,23 +2,10 @@
 
 import {replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
 import {getCleanEventName} from "./events.js";
-import {pbListEvents, pbListStringSelectCustomId, getPbList} from "./pbList.js";
 import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js";
 
 const commands = [
-	{
-		name: "pblist",
-		description: "Affiche la liste des PB single des membres du serveur pour un event donné.",
-		argument: {
-			name: "event",
-			description: "Choix de l'event",
-			required: false,
-			choices: pbListEvents
-		},
-		method: getPbList,
-		stringSelectCustomId: pbListStringSelectCustomId
-	},
 	{
 		name: "bestcubes",
 		description: "Affiche la liste des meilleurs cubes du moment, par event.",
@@ -60,7 +47,7 @@ const onInteraction = async interaction => {
 		return;
 	}
 	let commandName = interaction.commandName;
-	if (["ping", "help"].includes(commandName)) {
+	if (["ping", "help", "pblist"].includes(commandName)) {
 		return;
 	}
 	let argument = commands

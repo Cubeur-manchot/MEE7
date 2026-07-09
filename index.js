@@ -9,6 +9,7 @@ import onReady from "./eventHandlers/onReady.js";
 import onMessageComponentInteraction from "./eventHandlers/onMessageComponentInteraction.js";
 import pingCommand from "./commandHandlers/ping.js";
 import helpCommand from "./commandHandlers/help.js";
+import pblistCommand from "./commandHandlers/pblist.js";
 
 const Mee7 = new Discord.Client({
 	intents: [
@@ -23,7 +24,8 @@ const commandHandler = new CommandsHandler({
 	discordClient: Mee7,
 	commands: [
 		pingCommand,
-		helpCommand
+		helpCommand,
+		pblistCommand
 	],
 	logger,
 	guildIds: [process.env.GUILD_ID]
