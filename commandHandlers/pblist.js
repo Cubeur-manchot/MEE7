@@ -45,7 +45,7 @@ const getPbListData = async eventName => {
 	return filteredData;
 };
 
-const parseData = (data, timeColumnIndex) =>	data
+const parseData = ([, ...rows], timeColumnIndex) => rows
 	.map(line => (
 		line[0] && line[1] && line[2] && line[timeColumnIndex])
 			? {
