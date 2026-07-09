@@ -25,7 +25,8 @@ const commandHandler = new CommandsHandler({
 		pingCommand,
 		helpCommand
 	],
-	logger
+	logger,
+	guildIds: [process.env.GUILD_ID]
 });
 
 Mee7.once(Discord.Events.ClientReady, onReady);
