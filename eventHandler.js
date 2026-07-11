@@ -1,23 +1,9 @@
 "use strict";
 
 import {replyWithEmbedAndComponents, updateInteractionMessage} from "./messages.js";
-import {getCleanEventName} from "./events.js";
-import {bestCubesEvents, bestCubesStringSelectCustomId, getBestCubes} from "./bestCubes.js";
 import {algOfTheDayStringSelectCustomId, getAlgOfTheDay} from "./algOfTheDay.js";
 
 const commands = [
-	{
-		name: "bestcubes",
-		description: "Affiche la liste des meilleurs cubes du moment, par event.",
-		argument: {
-			name: "cube",
-			description: "Choix du cube",
-			required: false,
-			choices: bestCubesEvents
-		},
-		method: getBestCubes,
-		stringSelectCustomId: bestCubesStringSelectCustomId
-	},
 	{
 		name: "algoftheday",
 		description: "Donne l'algo du jour, par set.",
@@ -31,13 +17,6 @@ const treatCommand = async (commandToReply, commandName, argument) => {
 	if (!matchingCommand) {
 		return;
 	}
-	if (matchingCommand.argument) {
-		if (argument) {
-			argument = getCleanEventName(argument) ?? argument;
-		} else {
-			argument = matchingCommand.argument.choices[0]; // default choice
-		}
-	}
 	let answer = await matchingCommand.method(argument, commandToReply);
 	replyWithEmbedAndComponents(commandToReply, answer);
 };
@@ -47,7 +26,7 @@ const onInteraction = async interaction => {
 		return;
 	}
 	let commandName = interaction.commandName;
-	if (["ping", "help", "pblist"].includes(commandName)) {
+	if (["ping", "help", "pblist", "bestcubes"].includes(commandName)) {
 		return;
 	}
 	let argument = commands
