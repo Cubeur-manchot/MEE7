@@ -8,50 +8,52 @@ const algOfTheDayFileId = process.env.ALGOFTHEDAY_FILE_ID;
 
 const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
-const algOfTheDayStringSelectCustomId = "algOfTheDayStringSelectCustomId";
+const algOfTheDayStringSelectCustomIdPrefix = "algOfTheDay";
 
-const getAlgOfTheDay = async (alg, message, channelScheduled) => {
-	if (alg) { // component interaction
-		return {
-			embeds: null,
-			components: buildAlgOfTheDayComponents(message.components[0].components[0].data.options.map(option => option.value), alg),
-			textContent: message.content.replace(/(?<=\$alg ).*?(?= -)/, alg)
+const algOfTheDayStringSelectCustomId = `${algOfTheDayStringSelectCustomIdPrefix}${process.env.STRINGSELECT_SUFFIX}`;
+
+const triggerAlgsOfTheDay = async discordClient => {
+	const algOfTheDayData = await loadJsonData(algOfTheDayFileId);
+	for (const [channelId, algSet] of Object.entries(algOfTheDayData)) {
+		const channel = await fetchChannel(discordClient, channelId);
+		if (!channel) {
+			logger.error(`Cannot send alg of the day for channel with id ${channelId}`);
+			continue;
 		}
-	} else {
-		let channel =
-			channelScheduled // scheduled command, no message
-			?? message.channel; // command by a user in a channel
-		let algset = (await loadJsonData(algOfTheDayFileId))[channel.id];
-		if (!algset) {
-			return {
-				embeds: null,
-				components: null,
-				textContent: `:x: Erreur : Salon "${channel.name}" invalide.`
-			};
-		}
-		let caseCount = algset.cases.length;
-		// local dates
-		let now = new Date();
-		let epoch = new Date("1970-01-01 00:00:00");
-		let daysCount = Math.floor((now - epoch) / (24*60*60*1000));
-		let caseIndex = daysCount % caseCount;
-		let caseOfTheDay = algset.cases[caseIndex];
-		let defaultAlgorithm = getAlg(caseOfTheDay.algorithms[0]);
-		let eventOption = algset.event.startsWith("3") ? "" : ` -${algset.event[0]}`;
-		return {
-			embeds: null,
-			components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(getAlg)),
-			textContent: `$alg ${defaultAlgorithm} -${algset.mask ?? algset.name}${eventOption} // ${algset.name} du jour (${caseIndex + 1}/${caseCount}) : ${caseOfTheDay.name}`
-		};
+		const algOfTheDayMessage = await getNewAlgOfTheDay(algSet);
+		sendMessageToChannel(algOfTheDayMessage, channel);
 	}
 };
+
+const getNewAlgOfTheDay = algSet => { // used to add the new alg on scheduled tick
+	const caseCount = algSet.cases.length;
+	// dates are local
+	const now = new Date();
+	const epoch = new Date("1970-01-01 00:00:00");
+	const daysCount = Math.floor((now - epoch) / (24*60*60*1000));
+	const caseIndex = daysCount % caseCount;
+	const caseOfTheDay = algSet.cases[caseIndex];
+	const defaultAlgorithm = getAlg(caseOfTheDay.algorithms[0]);
+	const eventOption = algSet.event.startsWith("3") ? "" : ` -${algSet.event[0]}`;
+	return {
+		embeds: null,
+		components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(getAlg)),
+		textContent: `$alg ${defaultAlgorithm} -${algset.mask ?? algset.name}${eventOption} // ${algset.name} du jour (${caseIndex + 1}/${caseCount}) : ${caseOfTheDay.name}`
+	};
+};
+
+const getUpdatedAlgOfTheDay = (alg, message) => ({ // used to update the alg on string select interaction
+	embeds: null,
+	components: buildAlgOfTheDayComponents(message.components[0].components[0].data.options.map(option => option.value), alg),
+	textContent: message.content.replace(/(?<=\$alg ).*?(?= -)/, alg)
+});
 
 const getAlg = alg =>
 	alg.algorithm // return .algorithm if object
 	?? alg; // otherwise assume it is just a string
  
 const buildAlgOfTheDayComponents = (algorithms, selectedAlgorithm) => {
-	let selectOptions = algorithms
+	const selectOptions = algorithms
 		.slice(0, 10) // maximum 10 options
 		.map((algorithm, index) => ({
 			label: algorithm,
@@ -61,28 +63,18 @@ const buildAlgOfTheDayComponents = (algorithms, selectedAlgorithm) => {
 	return createRowWithSelectComponents(selectOptions, selectedAlgorithm ?? selectOptions[0].value, algOfTheDayStringSelectCustomId);
 };
 
-const scheduleNextAlgOfTheDay = discordClient => {
-	let now = new Date();
-	let nextMidnight = new Date(now);
-	nextMidnight.setHours(24, 0, 0, 0);
-	let timeSpanMillisecondsUntilNextExecution = nextMidnight - now;
-	setTimeout(
-		() => {
-			scheduleNextAlgOfTheDay(discordClient);
-			triggerAlgOfTheDay(discordClient);
-		},
-		timeSpanMillisecondsUntilNextExecution
-	);
+const fetchChannel = async (discordClient, channelId) => {
+	try {
+		logger.info(`Fetching channel with id ${channelId}`);
+		const channel = await discordClient.channels.fetch(channelId);
+		logger.info(`Channel with id ${channelId} has been fetched successfully.`);
+		return channel;
+	} catch (fetchChannelError) {
+		logger.error(`Error while fetching channel with id ${channelId}: ${fetchChannelError.stack}`);
+		return null;
+	}
 };
 
-const triggerAlgOfTheDay = async discordClient => {
-	let channelIds = Object.keys((await loadJsonData(algOfTheDayFileId)));
-	for (let channelId of channelIds) {
-		let channel = await fetchChannel(discordClient, channelId);
-		if (!channel) {
-			continue;
-		}
-		sendMessageToChannel(await getAlgOfTheDay(null, null, channel), channel);
 const sendMessageToChannel = async (message, channel) => {
 	try {
 		await channel.send({
@@ -95,8 +87,4 @@ const sendMessageToChannel = async (message, channel) => {
 	}
 };
 
-const fetchChannel = (discordClient, channelId) =>
-	discordClient.channels.fetch(channelId)
-		.catch(fetchChannelError => logger.error(`Fail to fetch channel with id ${channelId}: ${fetchChannelError}`));
-
-export {algOfTheDayStringSelectCustomId, getAlgOfTheDay, scheduleNextAlgOfTheDay};
+export {algOfTheDayStringSelectCustomId, triggerAlgsOfTheDay, getUpdatedAlgOfTheDay};

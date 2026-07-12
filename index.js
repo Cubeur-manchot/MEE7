@@ -4,9 +4,9 @@ import Discord from "discord.js";
 import {CommandsHandler} from "discord-commands-toolkit";
 
 import logger from "./logger.js";
-import {onInteraction} from "./eventHandler.js";
 import onReady from "./eventHandlers/onReady.js";
 import onMessageComponentInteraction from "./eventHandlers/onMessageComponentInteraction.js";
+import onTick from "./eventHandlers/onTick.js";
 import pingCommand from "./commandHandlers/ping.js";
 import helpCommand from "./commandHandlers/help.js";
 import pblistCommand from "./commandHandlers/pblist.js";
@@ -34,8 +34,8 @@ const commandHandler = new CommandsHandler({
 });
 
 Mee7.once(Discord.Events.ClientReady, onReady);
-Mee7.on(Discord.Events.InteractionCreate, onInteraction);
 Mee7.on(Discord.Events.InteractionCreate, onMessageComponentInteraction);
+Mee7.on("tick", onTick);
 
 try {
 	await Mee7.login(process.env.TOKEN);

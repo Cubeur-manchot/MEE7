@@ -1,7 +1,6 @@
 "use strict";
 
 import Discord from "discord.js";
-import {scheduleNextAlgOfTheDay} from "../algOfTheDay.js";
 import logger from "../logger.js";
 
 const onReady = discordClient => {
@@ -10,7 +9,15 @@ const onReady = discordClient => {
 		status: "online",
 	});
 	logger.info("MEE7 is ready !");
-	scheduleNextAlgOfTheDay(discordClient);
+	scheduleNextTickEvent(discordClient);
 };
+
+const scheduleNextTickEvent = discordClient => setTimeout(
+	() => {
+		discordClient.emit("tick");
+		scheduleNextTickEvent(discordClient);
+	},
+	new Date().setHours(24, 0, 0, 0) - new Date() // next day at 00:00 local time
+);
 
 export default onReady;
