@@ -11,7 +11,7 @@ const handleHelpCommandInteraction = function (interaction) {
 				"Aide",
 				null,
 				"Voici les commandes actuellement reconnues :",
-				this.commandsHandler.applicationCommands.map(command => ({
+				this.commandsHandler.guildApplicationCommands.get(process.env.GUILD_ID).map(command => ({
 					name: command.name,
 					value: `</${command.name}:${command.id}> : ${command.description}`
 				}))
