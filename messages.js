@@ -2,20 +2,6 @@
 
 import logger from "./logger.js";
 
-const replyWithEmbedAndComponents = (initialMessage, answer) => replyMessage(initialMessage, answer.textContent, answer.embeds, answer.components);
-
-const replyMessage = (initialMessage, textContent, embeds, components) => {
-	initialMessage.reply({
-		content: textContent,
-		embeds: embeds,
-		components: components,
-		allowedMentions: {
-			repliedUser: false
-		}
-	})
-	.catch(replyMessageError => logger.error(`Fail to answer with message : ${replyMessageError}`));
-};
-
 const updateInteractionMessage = (interaction, answer) => {
 	interaction.update({
 		content: answer.textContent,
