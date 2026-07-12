@@ -2,7 +2,6 @@
 
 import {loadJsonData} from "./data.js";
 import createRowWithSelectComponents from "./discordBuilders/componentBuilder.js";
-import {sendMessageToChannel} from "./messages.js";
 import logger from "./logger.js";
 
 const algOfTheDayFileId = process.env.ALGOFTHEDAY_FILE_ID;
@@ -84,6 +83,15 @@ const triggerAlgOfTheDay = async discordClient => {
 			continue;
 		}
 		sendMessageToChannel(await getAlgOfTheDay(null, null, channel), channel);
+const sendMessageToChannel = async (message, channel) => {
+	try {
+		await channel.send({
+			content: message.textContent,
+			embeds: message.embeds,
+			components: message.components
+		});
+	} catch (sendMessageError) {
+		logger.error(`Fail to send message in channel with id ${channel.id} : ${sendMessageError.stack}`);
 	}
 };
 
