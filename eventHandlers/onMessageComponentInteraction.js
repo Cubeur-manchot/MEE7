@@ -27,4 +27,16 @@ const onMessageComponentInteraction = async interaction => {
 	updateInteractionMessage(interaction, answer);
 };
 
+const updateInteractionMessage = async (interaction, answer) => {
+	try {
+		await interaction.update({
+			content: answer.textContent,
+			embeds: answer.embeds,
+			components: answer.components
+		});
+	} catch (interactionMessageUpdateError) {
+		logger.error(`Error while updating message after interaction : ${interactionMessageUpdateError.stack}`);
+	}
+};
+
 export default onMessageComponentInteraction;
