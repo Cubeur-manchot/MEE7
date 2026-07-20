@@ -14,7 +14,7 @@ const onReady = discordClient => {
 
 const scheduleNextTickEvent = discordClient => setTimeout(
 	() => {
-		discordClient.emit("tick");
+		discordClient.emit("tick", discordClient);
 		scheduleNextTickEvent(discordClient);
 	},
 	new Date().setHours(24, 0, 0, 0) - new Date() // next day at 00:00 local time

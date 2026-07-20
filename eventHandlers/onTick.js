@@ -2,6 +2,6 @@
 
 import {triggerAlgsOfTheDay} from "../algOfTheDay.js";
 
-const onTick = () => triggerAlgsOfTheDay();
+const onTick = discordClient => triggerAlgsOfTheDay(discordClient);
 
 export default onTick;
