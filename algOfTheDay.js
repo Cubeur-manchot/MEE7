@@ -38,7 +38,7 @@ const getNewAlgOfTheDay = algSet => { // used to add the new alg on scheduled ti
 	return {
 		embeds: null,
 		components: buildAlgOfTheDayComponents(caseOfTheDay.algorithms.map(getAlg)),
-		textContent: `$alg ${defaultAlgorithm} -${algset.mask ?? algset.name}${eventOption} // ${algset.name} du jour (${caseIndex + 1}/${caseCount}) : ${caseOfTheDay.name}`
+		textContent: `$alg ${defaultAlgorithm} -${algSet.mask ?? algSet.name}${eventOption} // ${algSet.name} du jour (${caseIndex + 1}/${caseCount}) : ${caseOfTheDay.name}`
 	};
 };
 
