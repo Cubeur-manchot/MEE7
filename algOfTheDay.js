@@ -21,7 +21,8 @@ const triggerAlgsOfTheDay = async discordClient => {
 			continue;
 		}
 		const algOfTheDayMessage = await getNewAlgOfTheDay(algSet);
-		sendMessageToChannel(algOfTheDayMessage, channel);
+		await sendMessageToChannel(algOfTheDayMessage, channel);
+		logger.info(`Alg of the day successfully sent for set "${channel.name}" (channel id = "${channelId}").`);
 	}
 };
 
