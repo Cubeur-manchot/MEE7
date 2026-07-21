@@ -2,7 +2,7 @@
 
 import {Command, SlashCommandStringOption} from "discord-commands-toolkit";
 
-import getEventEmoji from "../eventEmojis.js";
+import getEventEmoji from "../helpers/eventEmojis.js";
 import {loadTableData} from "../data.js";
 import createEmbed from "../discordBuilders/embedBuilder.js";
 import createRowWithSelectComponents from "../discordBuilders/componentBuilder.js";
