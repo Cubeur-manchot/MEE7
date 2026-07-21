@@ -3,18 +3,16 @@
 import {Command, SlashCommandStringOption} from "discord-commands-toolkit";
 
 import getEventEmoji from "../helpers/eventEmojis.js";
-import {loadTableData} from "../helpers/data.js";
+import {pbListEvents, pbListSheetId, getPbListData} from "../helpers/pbListHelper.js";
 import createEmbed from "../discordBuilders/embedBuilder.js";
 import createRowWithSelectComponents from "../discordBuilders/componentBuilder.js";
-
-const pbListEvents = process.env.PBLIST_EVENTS.split(",");
-
-const pbListSheetId = process.env.PBLIST_SPREADSHEET_ID;
 
 const handlePbListCommandInteraction = async function (interaction, options) {
 	const eventName = options.get("event");
 	const pbListData = await getPbListData(eventName);
-	const embedFields = createEmbedFields(pbListData);
+	const orderedData = orderByTimeAscending(pbListData);
+	const filteredData = filterTop100(orderedData);
+	const embedFields = createEmbedFields(filteredData);
 	const selectOptions = pbListEvents
 		.map(eventName => {
 			return {
@@ -36,44 +34,7 @@ const handlePbListCommandInteraction = async function (interaction, options) {
 	};
 };
 
-const getPbListData = async eventName => {
-	const rawData = await loadTableData(pbListSheetId, "Liste des PB");
-	const timeColumnNumber = rawData[0].findIndex(headerLabel => headerLabel === eventName);
-	const parsedData = parseData(rawData, timeColumnNumber);
-	const orderedData = orderByTimeAscending(parsedData);
-	const filteredData = filterTop100(orderedData);
-	return filteredData;
-};
-
-const parseData = ([, ...rows], timeColumnIndex) => rows
-	.map(line => (
-		line[0] && line[1] && line[2] && line[timeColumnIndex])
-			? {
-				member: {
-					name: line[0],
-					id: line[1],
-					discordIdentifier: line[2]
-				},
-				time: {
-					raw: line[timeColumnIndex],
-					seconds: parseDurationSeconds(line[timeColumnIndex])
-				}
-			}
-			: null)
-	.filter(Boolean);
-
-const parseDurationSeconds = duration =>
-	typeof duration === "number"
-		? duration
-		: duration
-			.split(":")
-			.map(element => parseFloat(element))
-			.reverse()
-			.map((element, index) => element * Math.pow(60, index))
-			.reduce((partialSum, currentPartialTimeSeconds) => partialSum + currentPartialTimeSeconds, 0);
-
-const orderByTimeAscending = pbList =>
-	pbList.sort((firstPbListElement, secondPbListElement) => {
+const orderByTimeAscending = pbList => pbList.sort((firstPbListElement, secondPbListElement) => {
 		return firstPbListElement.time.seconds - secondPbListElement.time.seconds;
 	});
 
