@@ -1,6 +1,6 @@
 "use strict";
 
-import {loadJsonData} from "./data.js";
+import {loadJsonData} from "./helpers/data.js";
 import createRowWithSelectComponents from "./discordBuilders/componentBuilder.js";
 import logger from "./logger.js";
 

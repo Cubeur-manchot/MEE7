@@ -2,7 +2,7 @@
 
 import {google} from "googleapis";
 
-import logger from "./logger.js";
+import logger from "../logger.js";
 
 const auth = new google.auth.GoogleAuth({
 	scopes: [
