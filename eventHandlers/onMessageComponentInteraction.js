@@ -32,6 +32,7 @@ const updateInteractionMessage = async (interaction, answer) => {
 		});
 	} catch (interactionMessageUpdateError) {
 		logger.error(`Error while updating message after interaction : ${interactionMessageUpdateError.stack}`);
+		throw interactionMessageUpdateError;
 	}
 };
 
