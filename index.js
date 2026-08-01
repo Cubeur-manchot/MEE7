@@ -40,6 +40,7 @@ Mee7.on("tick", onTick);
 try {
 	await Mee7.login(process.env.TOKEN);
 	logger.info("MEE7 is logged in !");
-} catch (failedLoginErrorMessage) {
-	logger.error(`MEE7 failed to login : ${failedLoginErrorMessage.stack}`);
+} catch (failedLoginError) {
+	logger.error(`MEE7 failed to login : ${failedLoginError.stack}`);
+	throw failedLoginError;
 }
