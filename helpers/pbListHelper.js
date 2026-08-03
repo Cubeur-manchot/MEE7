@@ -6,8 +6,10 @@ const pbListEvents = process.env.PBLIST_EVENTS.split(",");
 
 const pbListSheetId = process.env.PBLIST_SPREADSHEET_ID;
 
+const pbListTabName = "Liste des PB";
+
 const getPbListData = async eventName =>
-	(await loadTableData(pbListSheetId, "Liste des PB"))
+	(await loadTableData(pbListSheetId, pbListTabName))
 		.map((row, rowIndex, rawData) =>
 			row.filter((_, index) => index <= 2 || rawData[0][index] === eventName)) // keep columns 0, 1, 2, and the time for this event
 		.filter(isNotHeader)
