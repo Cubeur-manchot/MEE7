@@ -32,6 +32,39 @@ const loadTableData = async (spreadsheetId, tabName) => {
 	}
 };
 
+const writeTableCell = async (spreadsheetId, tabName, cellReference, value) => {
+	try {
+		logger.info(`Writing data to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}, cell: ${cellReference}).`);
+		await googleSheetsClient.spreadsheets.values.update({
+			spreadsheetId: spreadsheetId,
+			range: `${tabName}!${cellReference}`,
+			valueInputOption: "USER_ENTERED", // keeps the text as provided, no automatic formatting
+			requestBody: {values: [[value]]}
+		});
+		logger.info(`Data successfully written to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}, cell: ${cellReference}).`);
+	} catch (spreadsheetDataWritingError) {
+		logger.error(`Error while writing data to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}, cell: ${cellReference}): ${spreadsheetDataWritingError.stack}`);
+		throw spreadsheetDataWritingError;
+	}
+};
+
+const appendTableRow = async (spreadsheetId, tabName, rowValues) => {
+	try {
+		logger.info(`Appending a row to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}).`);
+		await googleSheetsClient.spreadsheets.values.append({
+			spreadsheetId: spreadsheetId,
+			range: tabName,
+			valueInputOption: "USER_ENTERED",
+			insertDataOption: "INSERT_ROWS",
+			requestBody: {values: [rowValues]}
+		});
+		logger.info(`Row successfully appended to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}).`);
+	} catch (spreadsheetDataAppendingError) {
+		logger.error(`Error while appending a row to Google Sheets (spreadsheetId: ${spreadsheetId}, tab: ${tabName}): ${spreadsheetDataAppendingError.stack}`);
+		throw spreadsheetDataAppendingError;
+	}
+};
+
 const loadJsonData = async fileId => {
 	try {
 		logger.info(`Loading JSON data from Google Drive (fileId: ${fileId}).`);
@@ -52,4 +85,4 @@ const loadJsonData = async fileId => {
 	}
 };
 
-export {loadTableData, loadJsonData};
+export {loadTableData, writeTableCell, appendTableRow, loadJsonData};

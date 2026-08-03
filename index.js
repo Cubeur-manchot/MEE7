@@ -10,6 +10,7 @@ import onTick from "./eventHandlers/onTick.js";
 import pingCommand from "./commandHandlers/ping.js";
 import helpCommand from "./commandHandlers/help.js";
 import pblistCommand from "./commandHandlers/pblist.js";
+import savepbCommand from "./commandHandlers/savepb.js";
 import bestcubesCommand from "./commandHandlers/bestcubes.js";
 
 const Mee7 = new Discord.Client({
@@ -27,6 +28,7 @@ const commandHandler = new CommandsHandler({
 		pingCommand,
 		helpCommand,
 		pblistCommand,
+		savepbCommand,
 		bestcubesCommand
 	],
 	logger,
