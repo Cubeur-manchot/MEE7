@@ -8,9 +8,19 @@ const pbListSheetId = process.env.PBLIST_SPREADSHEET_ID;
 
 const pbListTabName = "Liste des PB";
 
-const getPb = async (userId, eventName) =>
-	(await getPbListData(eventName))
-		.filter(pb => pb.member.id === userId);
+const getPb = async (userId, eventName) => {
+	const data = await loadTableData(pbListSheetId, pbListTabName);
+	const columnIndex = data[0].indexOf(eventName);
+	const rowIndex = data.findIndex(row => row[1] === userId);
+	const exists = rowIndex !== -1 && columnIndex !== -1 && data[rowIndex][columnIndex];
+	const pb = exists ? parseOneRow(data[rowIndex].filter((_, index) => index <= 2 || index === columnIndex)) : null;
+	return {
+		columnIndex,
+		rowIndex,
+		exists,
+		pb
+	};
+};
 
 const getPbListData = async eventName =>
 	(await loadTableData(pbListSheetId, pbListTabName))
@@ -42,19 +52,13 @@ const parseDurationSeconds = duration =>
 			.map((element, index) => element * Math.pow(60, index))
 			.reduce((partialSum, currentPartialTimeSeconds) => partialSum + currentPartialTimeSeconds, 0);
 
-const savePb = async (member, eventName, timeRaw) => {
-	const rawTableData = await loadTableData(pbListSheetId, pbListTabName);
-	const columnIndex = rawTableData[0].indexOf(eventName);
-	if (columnIndex === -1) {
-		throw new Error(`Event name "${eventName}" not found in the file header.`);
-	}
-	const rowIndex = rawTableData.findIndex(row => row[1] === member.id);
-	if (rowIndex === -1) { // member does not exist, need to add it
-		const newRow = [member.displayName, member.id, member.user.tag, ...Array(columnIndex - 3).fill(""), timeRaw];
-		await appendTableRow(pbListSheetId, pbListTabName, newRow);
-	} else { // member already exists, update the cell
+const savePb = async (member, columnIndex, rowIndex, exists, timeRaw) => {
+	if (exists) { // member already exists, update the cell
 		const cellReference = `${String.fromCharCode(columnIndex + 65)}${rowIndex + 1}`;
 		await writeTableCell(pbListSheetId, pbListTabName, cellReference, timeRaw);
+	} else { // member does not exist, need to add it
+		const newRow = [member.displayName, member.id, member.user.tag, ...Array(columnIndex - 3).fill(""), timeRaw];
+		await appendTableRow(pbListSheetId, pbListTabName, newRow);
 	}
 };
 

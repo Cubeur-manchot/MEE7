@@ -57,12 +57,12 @@ const processPb = async function (member, eventName, textContent) {
 	}
 	const newTimeRaw = timeMatches[0];
 	const newTimeSeconds = parseDurationSeconds(newTimeRaw);
-	const oldTime = (await getPb(member.id, eventName))[0]?.time;
-	if (newTimeSeconds > oldTime?.seconds) {
-		return getEphemeralErrorAnswer(`${eventEmoji} Le nouveau PB single ${newTimeRaw} est moins rapide que l'ancien ${oldTime.raw}.`);
+	const {columnIndex, rowIndex, exists, pb} = await getPb(member.id, eventName);
+	if (exists && newTimeSeconds > pb.time.seconds) {
+		return getEphemeralErrorAnswer(`${eventEmoji} Le nouveau PB single ${newTimeRaw} est moins rapide que l'ancien ${pb.time.seconds}.`);
 	}
 	try {
-		await savePb(member, eventName, newTimeRaw);
+		await savePb(member, columnIndex, rowIndex, exists, newTimeRaw);
 		return getEphemeralAnswer(`${eventEmoji} Le nouveau PB single ${newTimeRaw} a été enregistré :white_check_mark:`);
 	} catch (savePbError) {
 		return getEphemeralErrorAnswer(`${eventEmoji} Une erreur est survenue lors de l'enregistrement du PB single ${newTimeRaw}.`);
