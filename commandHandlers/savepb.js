@@ -10,8 +10,6 @@ const savepbCommandName = "savepb";
 
 const pbListUpdaterRoleId = process.env.PBLIST_UPDATER_ROLE_ID;
 
-const pbTimeRegex = /((([1-5]\d|[1-9]):)?[0-5])?\d\.\d{2}/g;
-
 const getEventNameFromChannelId = channelId => {
 	switch (channelId) {
 		case "353928758211903497": return "2x2";
@@ -33,7 +31,7 @@ const getEventNameFromChannelId = channelId => {
 
 const handleSavepbCommandInteraction = async function (interaction, options) {
 	if (interaction.isChatInputCommand()) {
-		return await treatPb(interaction.member, options.get("event"), options.get("time"));
+		return await processPb.call(this, interaction.member, options.get("event"), options.get("time"));
 	} else if (interaction.isMessageContextMenuCommand()) {
 		const message = interaction.targetMessage;
 		const targetMessageAuthor = interaction.targetMessage.member;
@@ -44,23 +42,20 @@ const handleSavepbCommandInteraction = async function (interaction, options) {
 		if (!eventName) {
 			return getEphemeralErrorUseSlashCommandAnswer.call(this, "Impossible de déterminer l'event.");
 		}
-		const timeMatches = interaction.targetMessage.content.match(pbTimeRegex) ?? [];
-		if (!timeMatches) {
-			return getEphemeralErrorUseSlashCommandAnswer.call(this, "Impossible de trouver un PB single dans le message sélectionné.");
-		}
-		if (timeMatches.some(timeMatch => timeMatch !== timeMatches[0])) {
-			return getEphemeralErrorUseSlashCommandAnswer.call(this, "Impossible de déterminer quel PB single enregistrer dans le message sélectionné.");
-		}
-		const newTime = timeMatches[0];
-		return await treatPb(targetMessageAuthor, eventName, newTime);
+		return await processPb.call(this, targetMessageAuthor, eventName, interaction.targetMessage.content);
 	}
 };
 
-const treatPb = async (member, eventName, newTimeRaw) => {
+const processPb = async function (member, eventName, textContent) {
 	const eventEmoji = getEventEmoji(eventName);
-	if (!pbTimeRegex.test(newTimeRaw)) {
-		throw new Error(`Invalid time format: "${newTimeRaw}"`);
+	const timeMatches = textContent.match(/(?:(?:(?:[1-5]\d|[1-9]):)?[0-5])?\d\.\d{2}/g) ?? [];
+	if (timeMatches.length === 0) {
+		return getEphemeralErrorUseSlashCommandAnswer.call(this, `${eventEmoji} Impossible de trouver un PB single, car le format fourni est invalide.`);
 	}
+	if (timeMatches.some(timeMatch => timeMatch !== timeMatches[0])) {
+		return getEphemeralErrorUseSlashCommandAnswer.call(this, `${eventEmoji} Impossible de déterminer quel PB single enregistrer, car plusieurs correspondances ont été trouvées.`);
+	}
+	const newTimeRaw = timeMatches[0];
 	const newTimeSeconds = parseDurationSeconds(newTimeRaw);
 	const oldTime = (await getPb(member.id, eventName))[0]?.time;
 	if (newTimeSeconds > oldTime?.seconds) {
