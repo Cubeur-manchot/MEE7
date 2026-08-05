@@ -12,12 +12,12 @@ const getPb = async (userId, eventName) => {
 	const data = await loadTableData(pbListSheetId, pbListTabName);
 	const columnIndex = data[0].indexOf(eventName);
 	const rowIndex = data.findIndex(row => row[1] === userId);
-	const exists = rowIndex !== -1 && columnIndex !== -1 && data[rowIndex][columnIndex];
-	const pb = exists ? parseOneRow(data[rowIndex].filter((_, index) => index <= 2 || index === columnIndex)) : null;
+	const pb = rowIndex !== -1 && data[rowIndex][columnIndex]
+		? parseOneRow(data[rowIndex].filter((_, index) => index <= 2 || index === columnIndex))
+		: null;
 	return {
 		columnIndex,
 		rowIndex,
-		exists,
 		pb
 	};
 };
@@ -52,8 +52,8 @@ const parseDurationSeconds = duration =>
 			.map((element, index) => element * Math.pow(60, index))
 			.reduce((partialSum, currentPartialTimeSeconds) => partialSum + currentPartialTimeSeconds, 0);
 
-const savePb = async (member, columnIndex, rowIndex, exists, timeRaw) => {
-	if (exists) { // member already exists, update the cell
+const savePb = async (member, columnIndex, rowIndex, timeRaw) => {
+	if (rowIndex !== -1) { // member already exists, update the cell
 		const cellReference = `${String.fromCharCode(columnIndex + 65)}${rowIndex + 1}`;
 		await writeTableCell(pbListSheetId, pbListTabName, cellReference, timeRaw);
 	} else { // member does not exist, need to add it
