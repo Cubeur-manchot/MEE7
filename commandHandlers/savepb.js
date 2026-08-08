@@ -5,6 +5,7 @@ import {Command, CommandContexts, SlashCommandStringOption} from "discord-comman
 
 import {pbListEvents, getPb, parseDurationSeconds, savePb} from "../helpers/pbListHelper.js";
 import getEventEmoji from "../helpers/eventEmojis.js";
+import logger from "../logger.js";
 
 const savepbCommandName = "savepb";
 
@@ -30,9 +31,15 @@ const getEventNameFromChannelId = channelId => {
 };
 
 const handleSavepbCommandInteraction = async function (interaction, options) {
+	logger.debug("Handling savepb command interaction.");
 	if (interaction.isChatInputCommand()) {
+		logger.debug("Slash command interaction.");
+		logger.debug(`Member: ${interaction.member.displayName} (${interaction.member.id})`);
+		logger.debug(`Event: ${options.get("event")}`);
+		logger.debug(`Options: ${JSON.stringify(options)}`);
 		return await processPb.call(this, interaction.member, options.get("event"), options.get("time"));
 	} else if (interaction.isMessageContextMenuCommand()) {
+		logger.debug("Message context menu command interaction.");
 		const message = interaction.targetMessage;
 		const targetMessageAuthor = interaction.targetMessage.member;
 		if (targetMessageAuthor !== interaction.member && !interaction.member.roles.cache.has(pbListUpdaterRoleId)) {
@@ -42,6 +49,9 @@ const handleSavepbCommandInteraction = async function (interaction, options) {
 		if (!eventName) {
 			return getEphemeralErrorUseSlashCommandAnswer.call(this, "Impossible de déterminer l'event.");
 		}
+		logger.debug(`Member: ${targetMessageAuthor.displayName} (${targetMessageAuthor.id})`);
+		logger.debug(`Event: ${eventName}`);
+		logger.debug(`Message content: ${message.content}`);
 		return await processPb.call(this, targetMessageAuthor, eventName, interaction.targetMessage.content);
 	}
 };
@@ -57,12 +67,16 @@ const processPb = async function (member, eventName, textContent) {
 	}
 	const newTimeRaw = timeMatches[0];
 	const newTimeSeconds = parseDurationSeconds(newTimeRaw);
+	logger.debug(`Getting PB for member ${member.displayName} (${member.id}) for event ${eventName}.`);
 	const {columnIndex, rowIndex, pb} = await getPb(member.id, eventName);
+	logger.debug(`PB for member ${member.displayName} (${member.id}) for event ${eventName}: ${JSON.stringify(pb)}`);
 	if (newTimeSeconds > pb?.time.seconds) {
 		return getEphemeralErrorAnswer(`${eventEmoji} Le nouveau PB single ${newTimeRaw} est moins rapide que l'ancien ${pb.time.seconds}.`);
 	}
 	try {
+		logger.debug(`Saving new PB single ${newTimeRaw} for member ${member.displayName} (${member.id}) for event ${eventName}.`);
 		await savePb(member, columnIndex, rowIndex, newTimeRaw);
+		logger.debug(`New PB single ${newTimeRaw} saved for member ${member.displayName} (${member.id}) for event ${eventName}.`);
 		return getEphemeralAnswer(`${eventEmoji} Le nouveau PB single ${newTimeRaw} a été enregistré :white_check_mark:`);
 	} catch (savePbError) {
 		return getEphemeralErrorAnswer(`${eventEmoji} Une erreur est survenue lors de l'enregistrement du PB single ${newTimeRaw}.`);

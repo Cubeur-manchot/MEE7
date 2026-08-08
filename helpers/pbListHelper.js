@@ -1,6 +1,7 @@
 "use strict";
 
 import {loadTableData, writeTableCell, appendTableRow} from "./data.js";
+import logger from "../logger.js";
 
 const pbListEvents = process.env.PBLIST_EVENTS.split(",");
 
@@ -55,10 +56,14 @@ const parseDurationSeconds = duration =>
 const savePb = async (member, columnIndex, rowIndex, timeRaw) => {
 	if (rowIndex !== -1) { // member already exists, update the cell
 		const cellReference = `${String.fromCharCode(columnIndex + 65)}${rowIndex + 1}`;
+		logger.debug(`Updating cell ${cellReference} for member ${member.displayName} (${member.id}) with new PB single ${timeRaw}.`);
 		await writeTableCell(pbListSheetId, pbListTabName, cellReference, timeRaw);
+		logger.debug(`Cell ${cellReference} updated for member ${member.displayName} (${member.id}) with new PB single ${timeRaw}.`);
 	} else { // member does not exist, need to add it
 		const newRow = [member.displayName, member.id, member.user.tag, ...Array(columnIndex - 3).fill(""), timeRaw];
+		logger.debug(`Appending new row for member ${member.displayName} (${member.id}) with new PB single ${timeRaw}.`);
 		await appendTableRow(pbListSheetId, pbListTabName, newRow);
+		logger.debug(`New row appended for member ${member.displayName} (${member.id}) with new PB single ${timeRaw}.`);
 	}
 };
 
